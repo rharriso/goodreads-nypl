@@ -1,12 +1,14 @@
 {
-  "name": "chat-example",
+  "name": "goodreads-nypl",
   "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
+  "description": "Connect goodreads with the NYPL.",
   "main": "index.js",
   "repository": "",
-  "author": "Mostafa Eweda <mo.eweda@gmail.com>",
+  "author": "Ross Harrison <ross.td.harrison@gmail.com>",
   "dependencies": {
     "async": "~0.2.8",
+    "babel-preset-es2017": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
     "express": "~3.2.4",
     "goodreads": "0.0.4",
     "react": "^15.3.1",
@@ -14,11 +16,20 @@
     "socket.io": "~0.9.14"
   },
   "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "gulp-browserify": "^0.5.1",
+    "gulp-eslint": "^3.0.1",
     "gulp-live-server": "0.0.30",
     "gulp-livereload": "^3.8.1",
-    "gulp-sourcemaps": "^1.6.0"
+    "gulp-react": "^3.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
+    "material-ui": "^0.15.4",
+    "react-tap-event-plugin": "^1.0.0"
   }
 }

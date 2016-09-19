@@ -1,7 +1,11 @@
-var gulp = require("gulp");
-var gls = require('gulp-live-server');
-var sourcemaps = require('gulp-sourcemaps');
-var browserify = require('gulp-browserify');
+var gulp        = require("gulp");
+var gls         = require('gulp-live-server');
+var sourcemaps  = require('gulp-sourcemaps');
+var browserify  = require('gulp-browserify');
+var react       = require('gulp-react');
+var babel       = require('gulp-babel');
+var gutil       = require('gulp-util');
+
 var livereload = require('gulp-livereload');
 
 var paths = {
@@ -10,12 +14,15 @@ var paths = {
 };
 
 gulp.task('scripts', function(){
-   
    gulp.src('./client-src/app.js') 
+        .on('error', gutil.log) 
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+          presets: ["es2015", "react"]
+        }).on('error', gutil.log))
         .pipe(browserify({
-          insertGlobals : true,
           debug : !gulp.env.production
-        }))
+        }).on('error', gutil.log))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./client/js'))
         .pipe(livereload({start: true, port: 8081}));
