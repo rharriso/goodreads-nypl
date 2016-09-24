@@ -15,18 +15,23 @@ var gr = new goodreads.client({
   'secret': "lnJccQqCjK2TPK2KH8iRuBszoesL6GQSeGOnHilbTA"
 });
 
-/*
-router.get("/", function(req, res){
+router.get("/shelves", function(req, res){
   return gr.getShelves('1309879', function(json) {
     if (json) {
-      var h1 = React.createElement("h1", null, "fucking why though");
-      res.write(ReactDOMServer.renderToString(h1));
-      res.write(JSON.stringify(json));
+	  	var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
+				return {
+					title: s.name[0],
+					count: s.book_count[0],
+					key: s.id[0]._
+				};	
+			})	
+  	
+      res.write(JSON.stringify(shelvesData));
       return res.end();
     }
   });
 });
-*/
+
 router.use("/", express.static(path.resolve(__dirname, "client/index.html")));
 router.use(express.static(path.resolve(__dirname, 'client')));
 

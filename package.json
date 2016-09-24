@@ -13,6 +13,7 @@
     "goodreads": "0.0.4",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "reqwest": "^2.0.5",
     "socket.io": "~0.9.14"
   },
   "devDependencies": {
