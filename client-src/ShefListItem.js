@@ -4,8 +4,12 @@ import reqwest from 'reqwest';
 
 var ShelfListItem = React.createClass({
 	render: function(){
-		return <ListItem>{this.props.shelf.title}</ListItem>
-	}	
+		return <ListItem onClick={this.onClick}>{this.props.shelf.title}</ListItem>
+	},
+	
+	onClick: function(event){
+		console.log(this.props.shelf);
+	}
 });
 
 export default ShelfListItem;
