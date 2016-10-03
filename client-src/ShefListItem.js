@@ -1,6 +1,6 @@
 import ListItem from 'material-ui/List/ListItem';
 import React from 'react';
-import reqwest from 'reqwest';
+import AppDispatcher from './Dispatchers/AppDispatcher';
 
 var ShelfListItem = React.createClass({
 	render: function(){
@@ -8,7 +8,10 @@ var ShelfListItem = React.createClass({
 	},
 	
 	onClick: function(event){
-		console.log(this.props.shelf);
+		AppDispatcher.handleViewAction({
+			actionType: "CURR_SHELF_CHANGE",
+			shelfName: this.props.shelf.title
+		});
 	}
 });
 

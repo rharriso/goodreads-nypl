@@ -8,27 +8,42 @@ var async = require('async');
 var express = require('express');
 var router = express();
 var server = http.createServer(router);
+require('dotenv').config();
 
 var goodreads = require('goodreads');
 var gr = new goodreads.client({ 
-  'key': "sRdquosmKQPAD84gKb0qQ",
-  'secret': "lnJccQqCjK2TPK2KH8iRuBszoesL6GQSeGOnHilbTA"
+  'key': process.env.GOODREADS_KEY,
+  'secret': process.env.GOODREADS_SECRET
 });
+
 
 router.get("/shelves", function(req, res){
   return gr.getShelves('1309879', function(json) {
-    if (json) {
-	  	var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
-				return {
-					title: s.name[0],
-					count: s.book_count[0],
-					key: s.id[0]._
-				};	
-			})	
-  	
-      res.write(JSON.stringify(shelvesData));
-      return res.end();
-    }
+  	var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
+			return {
+				title: s.name[0],
+				count: s.book_count[0],
+				key: s.id[0]._
+			};	
+		})	
+	
+    res.write(JSON.stringify(shelvesData));
+    return res.end();
+  });
+});
+
+
+router.get("/shelf/:shelfName", function(req,  res){
+	console.log(req.query.page);
+	return gr.getSingleShelf({
+		userID: '1309879',
+		shelf: req.params.shelfName,
+		per_page: 20,
+		page: req.query.page || 1
+		
+	}, function(json) { 
+    res.write(JSON.stringify(json));
+    return res.end();
   });
 });
 
