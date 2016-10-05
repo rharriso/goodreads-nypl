@@ -50,8 +50,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
 				url: "/shelf/" + payload.action.shelfName,
 				type: "json",
 				success: function(data){
-					currentShelf = data;
-					console.log("current shelf", currentShelf)	
+					currentShelf = data.books;
 					resolve();
 				}.bind(this),
 				error: reject	

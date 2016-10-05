@@ -6,9 +6,10 @@ var http = require('http');
 var path = require('path');
 var async = require('async');
 var express = require('express');
-var router = express();
-var server = http.createServer(router);
+var server = express();
 require('dotenv').config();
+
+debugger
 
 var goodreads = require('goodreads');
 var gr = new goodreads.client({ 
@@ -17,40 +18,50 @@ var gr = new goodreads.client({
 });
 
 
-router.get("/shelves", function(req, res){
+server.get("/shelves", function(req, res){
   return gr.getShelves('1309879', function(json) {
-  	var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
-			return {
-				title: s.name[0],
-				count: s.book_count[0],
-				key: s.id[0]._
-			};	
-		})	
-	
+    var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
+      return {
+        title: s.name[0],
+        count: s.book_count[0],
+        key: s.id[0]._
+      };	
+    })	
+
     res.write(JSON.stringify(shelvesData));
     return res.end();
   });
 });
 
 
-router.get("/shelf/:shelfName", function(req,  res){
-	console.log(req.query.page);
-	return gr.getSingleShelf({
-		userID: '1309879',
-		shelf: req.params.shelfName,
-		per_page: 20,
-		page: req.query.page || 1
-		
-	}, function(json) { 
-    res.write(JSON.stringify(json));
+server.get("/shelf/:shelfName", function(req,  res){
+  return gr.getSingleShelf({
+    userID: '1309879',
+    shelf: req.params.shelfName,
+    per_page: 200,
+    page: req.query.page || 1
+
+  }, function(json) { 
+    var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
+      return {
+        title: b.title[0],
+        author: b.authors[0].author[0].name[0]
+      };
+    });
+    res.write(JSON.stringify({
+      books: bookArr
+    }));
     return res.end();
   });
 });
 
-router.use("/", express.static(path.resolve(__dirname, "client/index.html")));
-router.use(express.static(path.resolve(__dirname, 'client')));
+server.use("/", express.static(path.resolve(__dirname, "client/index.html")));
+server.use(express.static(path.resolve(__dirname, 'client')));
+
+server.configure(function(){
+  server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
 
 server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
-  var addr = server.address();
-  console.log("Goodreads NYPL server listening at", addr.address + ":" + addr.port);
+  console.log("Goodreads NYPL server listening at", server.address + ":" + server.port);
 });
