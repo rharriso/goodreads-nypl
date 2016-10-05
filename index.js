@@ -43,9 +43,13 @@ server.get("/shelf/:shelfName", function(req,  res){
 
   }, function(json) { 
     var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
+      var author = b.authors[0].author[0].name[0]; 
+      var title = b.title[0];
+
       return {
-        title: b.title[0],
-        author: b.authors[0].author[0].name[0]
+        title: title,
+        author: author,
+        key: author+"-"+title.replace(" ", "-")
       };
     });
     res.write(JSON.stringify({

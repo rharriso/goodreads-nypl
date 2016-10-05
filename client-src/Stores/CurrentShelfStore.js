@@ -45,13 +45,15 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
 
 	
 	dispatcherIndex: AppDispatcher.register(function(payload) {
+
 		return new Promise(function(resolve, reject){
 		  reqwest({
 				url: "/shelf/" + payload.action.shelfName,
 				type: "json",
 				success: function(data){
-					currentShelf = data.books;
+					currentShelf = data;
 					resolve();
+          CurrentShelfStore.emitChange();
 				}.bind(this),
 				error: reject	
 			});

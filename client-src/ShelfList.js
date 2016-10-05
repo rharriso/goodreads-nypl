@@ -19,7 +19,7 @@ var ShelfList = React.createClass({
 	getInitialState: function(){
 		return {
 			shelves: []	
-		}
+		};
 	},
 	
 	componentDidMount: function(){

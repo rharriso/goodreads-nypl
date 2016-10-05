@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ShelfList from './ShelfList.js';
+import BookList from './BookList.js';
 import CurrentShelfStore from './Stores/CurrentShelfStore.js';
 
 console.log(ShelfList);
@@ -12,8 +13,13 @@ console.log(ShelfList);
 var App = React.createClass({
 	render: function(){
 		return <MuiThemeProvider>
-			<ShelfList>
-			</ShelfList>
+      <div>
+        <h1>Shelves</h1>
+        <ShelfList>
+        </ShelfList>
+        <BookList books={this.state.books}>
+        </BookList>
+      </div>
 		</MuiThemeProvider>;
 	},
 	
@@ -26,8 +32,13 @@ var App = React.createClass({
   },
   
   _onShelfChange: function(){
-  	console.log(CurrentShelfStore.get());
-  	debugger;
+  	this.setState({books: CurrentShelfStore.get().books});
+  },
+
+	getInitialState: function(){
+		return {
+			books: []	
+		};
   }
 });
 	
