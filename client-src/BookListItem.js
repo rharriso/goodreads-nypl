@@ -26,7 +26,11 @@ var BookListItem = React.createClass({
    
 
 	render: function(){
-		return <ListItem>{this.props.book.title}
+		return <ListItem
+        leftAvatar={
+          <Avatar src={this.props.book.imageUrl} />
+        }
+      >{this.props.book.title}
       
       <FlatButton
         label="audiobook" 

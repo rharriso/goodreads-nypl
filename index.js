@@ -49,6 +49,7 @@ server.get("/shelf/:shelfName", function(req,  res){
       return {
         title: title,
         author: author,
+        imageUrl: b.image_url[0],
         key: author+"-"+title.replace(" ", "-")
       };
     });
