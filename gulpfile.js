@@ -47,7 +47,7 @@ gulp.task('scripts-watch', ['scripts'], function(){
     */
 gulp.task('serve', ['scripts-watch'], function() {
   var monitor = nodemon({
-    exec: 'node-inspector & node --debug',
+    exec: 'node --debug',
     script: './index.js',
     ext: 'js jsx html',
     watch: ['index.js'],
