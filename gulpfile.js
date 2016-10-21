@@ -1,24 +1,20 @@
-var buffer      = require('vinyl-buffer');
 var gulp        = require("gulp");
-var gls         = require('gulp-live-server');
 var gulpUtil    = require('gulp-util');
 var nodemon 		= require('gulp-nodemon');
-var rename      = require('gulp-rename');
 var replace 		= require('stream-replace');
-var source      = require('vinyl-source-stream');
-var sourcemaps  = require('gulp-sourcemaps');
 var webpack     = require('gulp-webpack');
 var webpackConfig = require('./webpack.config');
 
 var livereload = require('gulp-livereload');
 
 var paths = {
-  clientSrc: ["./client-src/**/*"],
-  server: ["./server/**/*", "index.js"] 
+  clientSrc: ['./client-src/**/*'],
+  server: ['./server/**/*", "index.js'] 
 };
 
 gulp.task('scripts', function(){
-  webpack(webpackConfig);
+  webpack(webpackConfig)
+    .pipe(gulp.dest('client/'));
 });
 
 gulp.task('scripts-watch', ['scripts'], function(){

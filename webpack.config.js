@@ -2,8 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+  devtool: '#cheap-inline-source-map',
   entry: './client-src/app.jsx',
-  output: { path: __dirname + "/client/js", filename: './app.js' },
+  output: { path: __dirname + '/client', filename: './app.js' },
   module: {
     loaders: [
       {

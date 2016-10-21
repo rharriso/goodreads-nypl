@@ -9,8 +9,6 @@ var express = require('express');
 var server = express();
 require('dotenv').config();
 
-debugger
-
 var goodreads = require('goodreads');
 var gr = new goodreads.client({ 
   'key': process.env.GOODREADS_KEY,
@@ -18,7 +16,7 @@ var gr = new goodreads.client({
 });
 
 
-server.get("/shelves", function(req, res){
+server.get('/shelves', function(req, res){
   return gr.getShelves('1309879', function(json) {
     var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
       return {
@@ -34,14 +32,14 @@ server.get("/shelves", function(req, res){
 });
 
 
-server.get("/shelf/:shelfName", function(req,  res){
+server.get('/shelf/:shelfName', function(req,  res){
   return gr.getSingleShelf({
     userID: '1309879',
     shelf: req.params.shelfName,
     per_page: 20,
     order: req.query.order || 'a',
     page: req.query.page || 1,
-    sort: req.query.sort || "position"
+    sort: req.query.sort || 'position'
 
   }, function(json) { 
     var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
@@ -52,7 +50,7 @@ server.get("/shelf/:shelfName", function(req,  res){
         title: title,
         author: author,
         imageUrl: b.image_url[0],
-        key: author+"-"+title.replace(" ", "-")
+        key: author+'-'+title.replace(' ', '-')
       };
     });
     
@@ -64,13 +62,13 @@ server.get("/shelf/:shelfName", function(req,  res){
   });
 });
 
-server.use("/", express.static(path.resolve(__dirname, "client/index.html")));
+server.use('/', express.static(path.resolve(__dirname, 'client/index.html')));
 server.use(express.static(path.resolve(__dirname, 'client')));
 
 server.configure(function(){
   server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
-  console.log("Goodreads NYPL server listening at", server.address + ":" + server.port);
+server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function(){
+  console.log('Goodreads NYPL server listening at', server.address + ':' + server.port);
 });

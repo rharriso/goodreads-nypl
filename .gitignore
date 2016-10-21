@@ -2,3 +2,4 @@ client/js
 .env
 /node_modules/
 /npm-debug.log
+/client/app.js
