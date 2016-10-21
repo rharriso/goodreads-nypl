@@ -6,8 +6,7 @@ import {
 } from 'material-ui/Table';
 
 import React from 'react';
-import reqwest from 'reqwest';
-import BookListItem from './BookListItem';
+import BookListItem from './BookListItem.jsx';
 
 /*
   Book List
@@ -24,7 +23,7 @@ class BookList extends React.Component {
       </TableHeader>
       <TableBody>
         {this.props.books.map(function(book){
-          return <BookListItem book={book} key={book.key}></BookListItem>
+          return <BookListItem book={book} key={book.key}></BookListItem>;
         })}
       </TableBody>
     </Table>;

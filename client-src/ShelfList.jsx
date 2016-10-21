@@ -1,7 +1,7 @@
 import List from 'material-ui/List/List';
 import React from 'react';
 import reqwest from 'reqwest';
-import ShelfListItem from './ShefListItem';
+import ShelfListItem from './ShefListItem.jsx';
 
 /*
 	Shelf List
