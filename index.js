@@ -38,8 +38,10 @@ server.get("/shelf/:shelfName", function(req,  res){
   return gr.getSingleShelf({
     userID: '1309879',
     shelf: req.params.shelfName,
-    per_page: 200,
-    page: req.query.page || 1
+    per_page: 20,
+    order: req.query.order || 'a',
+    page: req.query.page || 1,
+    sort: req.query.sort || "position"
 
   }, function(json) { 
     var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
@@ -53,9 +55,11 @@ server.get("/shelf/:shelfName", function(req,  res){
         key: author+"-"+title.replace(" ", "-")
       };
     });
+    
     res.write(JSON.stringify({
       books: bookArr
     }));
+
     return res.end();
   });
 });
