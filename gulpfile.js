@@ -59,8 +59,9 @@ gulp.task('serve', ['scripts-watch'], function() {
   });
 
   monitor.on('readable', function (){
-    this.stdout.pipe(replace(/\\n/igm, '\n')).pipe(process.stdout);
-    this.stderr.pipe(replace(/\\n/igm, '\n')).pipe(process.stderr);
+    const NEWLINE_REPLACE = /\\n/igm;
+    this.stdout.pipe(replace(NEWLINE_REPLACE, '\n')).pipe(process.stdout);
+    this.stderr.pipe(replace(NEWLINE_REPLACE, '\n')).pipe(process.stderr);
   });
 
   // @NOTE: (pg 25.Dec.2015) - avoid errors during shutdown:
