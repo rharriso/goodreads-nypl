@@ -1,41 +1,24 @@
+var buffer      = require('vinyl-buffer');
 var gulp        = require("gulp");
 var gls         = require('gulp-live-server');
-var sourcemaps  = require('gulp-sourcemaps');
-var browserify  = require('browserify');
-var babel       = require('babelify');
 var gulpUtil    = require('gulp-util');
-var source      = require('vinyl-source-stream');
-var buffer      = require('vinyl-buffer');
-var reactify    = require('reactify');
-var rename      = require('gulp-rename');
 var nodemon 		= require('gulp-nodemon');
+var rename      = require('gulp-rename');
 var replace 		= require('stream-replace');
+var source      = require('vinyl-source-stream');
+var sourcemaps  = require('gulp-sourcemaps');
+var webpack     = require('gulp-webpack');
+var webpackConfig = require('./webpack.config');
 
 var livereload = require('gulp-livereload');
 
 var paths = {
-  clientSrc: ["./client-src/**/*.js"],
+  clientSrc: ["./client-src/**/*"],
   server: ["./server/**/*", "index.js"] 
 };
 
 gulp.task('scripts', function(){
-
-  var b = browserify({
-    debug: true,
-    sourceMaps: true,
-    entries: "./client-src/app.js" 
-  }).transform(babel, {presets: ["es2015", "react"]})
-    .transform(reactify);
-
-  b.bundle() 
-    .on('error', gulpUtil.log)
-    .pipe(source("./client-src/app.js"))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(rename({dirname: ''}))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest("./client/js/"))
-    .pipe(livereload({start: true, port: 8081}));
+  webpack(webpackConfig);
 });
 
 gulp.task('scripts-watch', ['scripts'], function(){
