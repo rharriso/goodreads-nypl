@@ -9,35 +9,37 @@ import CurrentShelfStore from './Stores/CurrentShelfStore';
 	Root Application
 */
 class App extends React.Component {
-  render (){
-    return <MuiThemeProvider>
-      <div>
-        <h1>Shelves</h1>
-        <ShelfList>
-        </ShelfList>
-        <BookList books={this.state.books}>
-        </BookList>
-      </div>
-		</MuiThemeProvider>;
+  constructor (props) {
+    super(props);
+    this.state = {
+      books: [],
+    };
   }
-	
+
   componentDidMount() {
-    CurrentShelfStore.addChangeListener(this._onShelfChange);
+    CurrentShelfStore.addChangeListener(this._onShelfChange.bind(this));
   }
 
   componentWillUnmount() {
-    CurrentShelfStore.removeChangeListener(this._onShelfChange);
+    CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
   }
   
   _onShelfChange(){
     this.setState({books: CurrentShelfStore.get().books});
   }
 
-  getInitialState(){
-    return {
-      books: []	
-    };
+  render (){
+    return <MuiThemeProvider>
+      <div>
+        <div className='flex-row'>
+          <ShelfList />
+          <BookList books={this.state.books}/>
+        </div>
+      </div>
+		</MuiThemeProvider>;
   }
+	
+
 }
 	
 	

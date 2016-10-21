@@ -1,0 +1,18 @@
+.flex-row {
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  margin: 0;
+}
+
+.shelf-list {
+  width: 25%;
+}
+
+.book-list {
+  width: 75%;
+}
+
+.book-list-body {
+  height: calc(100vh - 20px);  
+}

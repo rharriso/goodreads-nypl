@@ -13,20 +13,22 @@ import BookListItem from './BookListItem.jsx';
   */
 class BookList extends React.Component {
   render (){
-    return <Table>
-      <TableHeader>
-        <TableHeaderColumn>Image</TableHeaderColumn>
-        <TableHeaderColumn>Title</TableHeaderColumn>
-        <TableHeaderColumn>Audio</TableHeaderColumn>
-        <TableHeaderColumn>E-Book</TableHeaderColumn>
-        <TableHeaderColumn>Text</TableHeaderColumn>
-      </TableHeader>
-      <TableBody>
-        {this.props.books.map(function(book){
-          return <BookListItem book={book} key={book.key}></BookListItem>;
-        })}
-      </TableBody>
-    </Table>;
+    return <div className='book-list'>
+      <Table>
+        <TableHeader>
+          <TableHeaderColumn>Image</TableHeaderColumn>
+          <TableHeaderColumn>Title</TableHeaderColumn>
+          <TableHeaderColumn>Audio</TableHeaderColumn>
+          <TableHeaderColumn>E-Book</TableHeaderColumn>
+          <TableHeaderColumn>Text</TableHeaderColumn>
+        </TableHeader>
+        <TableBody>
+          {this.props.books.map(function(book){
+            return <BookListItem book={book} key={book.key}></BookListItem>;
+          })}
+        </TableBody>
+      </Table>
+    </div>;
   }
 
   

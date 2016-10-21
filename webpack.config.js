@@ -17,4 +17,11 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json'],
+    modules: [
+      path.resolve('./client-src'),
+      './node_modules'
+    ]
+  }
 };
