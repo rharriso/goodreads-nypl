@@ -18,6 +18,7 @@ class BookList extends React.Component {
         <TableHeader>
           <TableHeaderColumn>Image</TableHeaderColumn>
           <TableHeaderColumn>Title</TableHeaderColumn>
+          <TableHeaderColumn>Page Count</TableHeaderColumn>
           <TableHeaderColumn>Audio</TableHeaderColumn>
           <TableHeaderColumn>E-Book</TableHeaderColumn>
           <TableHeaderColumn>Text</TableHeaderColumn>

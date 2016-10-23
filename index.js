@@ -47,10 +47,12 @@ server.get('/shelf/:shelfName', function(req,  res){
       var title = b.title[0];
 
       return {
-        title: title,
         author: author,
         imageUrl: b.image_url[0],
-        key: author+'-'+title.replace(' ', '-')
+        key: author+'-'+title.replace(' ', '-'),
+        numPages: b.num_pages[0],
+      	raw: b,
+        title: title
       };
     });
     

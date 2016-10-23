@@ -33,6 +33,7 @@ class BookListItem extends React.Component {
       </TableRowColumn>
       
       <TableRowColumn>{this.props.book.title}</TableRowColumn>
+      <TableRowColumn>{this.props.book.numPages}</TableRowColumn>
       
       <TableRowColumn>
         <FlatButton
