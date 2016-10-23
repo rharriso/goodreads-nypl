@@ -43,9 +43,11 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
     this.on(CHANGE_EVENT, callback);
   },
 
-	
-	dispatcherIndex: AppDispatcher.register(function(payload) {
 
+  /**
+   *
+   */  
+	dispatcherIndex: AppDispatcher.register(function(payload) {
 		return new Promise(function(resolve, reject){
 		  reqwest({
 				url: "/shelf/" + payload.action.shelfName,

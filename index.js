@@ -51,12 +51,12 @@ server.get('/shelf/:shelfName', function(req,  res){
         imageUrl: b.image_url[0],
         key: author+'-'+title.replace(' ', '-'),
         numPages: b.num_pages[0],
-      	raw: b,
         title: title
       };
     });
     
     res.write(JSON.stringify({
+      raw: json.GoodreadsResponse,
       books: bookArr
     }));
 
