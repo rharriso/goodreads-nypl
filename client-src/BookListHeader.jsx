@@ -28,10 +28,16 @@ class BookListHeader extends Component {
    */
   render() {
     let content = this.props.label;
+    let linkClasses = 'book-list-header';
+    
+    if (this.props.current) {
+      linkClasses += ' ' + this.props.sortDir;
+    }
 
     if (this.props.sortProp) {
       content = (
-        <a title='{this.props.sortProp}' onClick={this.onClick.bind(this)}>
+        <a className={linkClasses}
+          title={this.props.sortProp} onClick={this.onClick.bind(this)}>
           {content}
         </a>
       );

@@ -6,13 +6,31 @@
 }
 
 .shelf-list {
-  width: 25%;
+  width: 200px;
 }
 
 .book-list {
-  width: 75%;
+  width: calc(100% - 200px);
 }
 
 .book-list-body {
   height: calc(100vh - 20px);  
+}
+
+.book-list-header {
+  color: blue;
+  cursor: pointer;
+}
+
+.book-list-header.a,  .book-list-header.d {
+  color: red;  
+}
+
+
+.book-list-header.a::after{
+  content: ' ^'
+}
+
+.book-list-header.d::after{
+  content: ' v'
 }
