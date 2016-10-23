@@ -1,29 +1,30 @@
 var AppDispatcher = require('../Dispatchers/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var Promise = require("es6-promise").Promise;
+var Promise = require('es6-promise').Promise;
 var assign = require('object-assign');
-var reqwest = require("reqwest");
+var reqwest = require('reqwest');
 
 var CHANGE_EVENT = 'change';
-var currentShelf;
-
-var goodreads = require('goodreads');
-var gr = new goodreads.client({ 
-  'key': "sRdquosmKQPAD84gKb0qQ",
-  'secret': "lnJccQqCjK2TPK2KH8iRuBszoesL6GQSeGOnHilbTA"
-});
+var shelf;
+var shelfTitle;
+var sortDir;
+var sortProp;
 
 var CurrentShelfStore = assign({}, EventEmitter.prototype, {
-	
-	/*
-		getter for the current shelf
-		@return {object} the current shelf
-	*/
-	get: function(){
-		return currentShelf;	
-	},
-	
-	emitChange: function() {
+  
+  /*
+    getter for the current shelf
+    @return {object} the current shelf
+  */
+  get: function(){
+    return {
+      books: shelf.books,
+      sortDir,
+      sortProp,
+    };	
+  },
+  
+  emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
 
@@ -37,29 +38,38 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
   
  
   /**
-   * @param {function} callback
-   */
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-
-  /**
    *
    */  
-	dispatcherIndex: AppDispatcher.register(function(payload) {
-		return new Promise(function(resolve, reject){
-		  reqwest({
-				url: "/shelf/" + payload.action.shelfName,
-				type: "json",
-				success: function(data){
-					currentShelf = data;
-					resolve();
+  dispatcherIndex: AppDispatcher.register(function(payload) {
+    let action = payload.action;
+
+    switch (action.actionType) {
+    case 'CURR_SHELF_CHANGE': 
+      shelfTitle = action.shelfName;
+      sortDir = undefined;
+      sortProp = undefined;
+      break;
+    case 'SHELF_SORT_CHANGE':
+      sortDir = action.sortDir;
+      sortProp = action.sortProp;
+    }
+
+    return new Promise(function(resolve, reject){
+      reqwest({
+        url: '/shelf/' + shelfTitle,
+        data: {
+          sortProp: payload.action.sortProp,
+          sortDir: payload.action.sortDir
+        },
+        type: 'json',
+        success: function(data){
+          shelf = data;
+          resolve();
           CurrentShelfStore.emitChange();
-				}.bind(this),
-				error: reject	
-			});
-		});
+        }.bind(this),
+        error: reject	
+      });
+    });
   })
 });
 

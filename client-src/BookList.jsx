@@ -9,6 +9,15 @@ import React from 'react';
 import BookListItem from './BookListItem.jsx';
 import BookListHeader from './BookListHeader.jsx';
 
+const HEADER_ITEMS = [
+  {label: 'Image', sortProp: 'position'},
+  {label: 'Title', sortProp: 'title'},
+  {label: 'Page Count', sortProp: 'num_pages'},
+  {label: 'Audio'},
+  {label: 'E-Book'},
+  {label: 'Text'}
+];
+
 /*
   Book List
   */
@@ -17,25 +26,17 @@ class BookList extends React.Component {
     return <div className='book-list'>
       <Table>
         <TableHeader>
-          <TableHeaderColumn>
-            <BookListHeader label='Image'/>
-          </TableHeaderColumn>
-          <TableHeaderColumn>
-            <BookListHeader label='Title'/>
-          </TableHeaderColumn>
-          <TableHeaderColumn>
-            <BookListHeader label='Page Count' sortProp='num_pages'/>
-          </TableHeaderColumn>
-          <TableHeaderColumn>
-            <BookListHeader label='Audio'/>
-          </TableHeaderColumn>
-          <TableHeaderColumn>
-            <BookListHeader label='E-Book'/>
-          </TableHeaderColumn>
-          <TableHeaderColumn>
-            <BookListHeader label='Text'/>
-          </TableHeaderColumn>
-        </TableHeader>
+          { HEADER_ITEMS.map((item) =>{
+            return <TableHeaderColumn>
+              <BookListHeader
+                current={this.props.sortProp === item.sortProp}
+                label={item.label}
+                sortDir={this.props.sortDir}
+                sortProp={item.sortProp}/>
+            </TableHeaderColumn>;
+          })}
+       </TableHeader>
+
         <TableBody>
           {this.props.books.map(function(book){
             return <BookListItem book={book} key={book.key}></BookListItem>;

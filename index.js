@@ -24,7 +24,7 @@ server.get('/shelves', function(req, res){
         count: s.book_count[0],
         key: s.id[0]._
       };	
-    })	
+    });
 
     res.write(JSON.stringify(shelvesData));
     return res.end();
@@ -37,9 +37,9 @@ server.get('/shelf/:shelfName', function(req,  res){
     userID: '1309879',
     shelf: req.params.shelfName,
     per_page: 20,
-    order: req.query.order || 'a',
+    order: req.query.sortDir || 'a',
     page: req.query.page || 1,
-    sort: req.query.sort || 'position'
+    sort: req.query.sortProp || 'position'
 
   }, function(json) { 
     var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){

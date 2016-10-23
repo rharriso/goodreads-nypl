@@ -25,7 +25,7 @@ class App extends React.Component {
   }
   
   _onShelfChange(){
-    this.setState({books: CurrentShelfStore.get().books});
+    this.setState(CurrentShelfStore.get());
   }
 
   render (){
@@ -33,7 +33,10 @@ class App extends React.Component {
       <div>
         <div className='flex-row'>
           <ShelfList />
-          <BookList books={this.state.books}/>
+          <BookList
+            books={this.state.books}
+            sortDir={this.state.sortDir}
+            sortProp={this.state.sortProp}/>
         </div>
       </div>
 		</MuiThemeProvider>;
