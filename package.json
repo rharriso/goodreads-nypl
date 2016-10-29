@@ -5,6 +5,9 @@
   "main": "index.js",
   "repository": "",
   "author": "Ross Harrison <ross.td.harrison@gmail.com>",
+  "scripts": {
+    "dev": "gulp serve"
+  },
   "dependencies": {
     "async": "~0.2.8",
     "babel-preset-es2017": "^6.14.0",
