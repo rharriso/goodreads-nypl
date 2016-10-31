@@ -2,28 +2,32 @@
 // # SimpleServer
 //
 // A simple chat server using Socket.IO, Express, and Async.
-var http = require('http');
 var path = require('path');
-var async = require('async');
 var express = require('express');
 var server = express();
 require('dotenv').config();
+const GOODREADS_EDIT_ACCOUNT_URL = 'https://www.goodreads.com/user/edit';
 
 var goodreads = require('goodreads');
-var gr = new goodreads.client({ 
+var gr = new goodreads.client({
   'key': process.env.GOODREADS_KEY,
   'secret': process.env.GOODREADS_SECRET
 });
 
+server.get('/userInfo', function () {
+  gr.showUser(req.params.userName, function(json) {
+      console.log(json);
+  });
+});
 
-server.get('/shelves', function(req, res){
-  return gr.getShelves('1309879', function(json) {
+server.get('/shelves/:userId', function(req, res){
+  return gr.getShelves(req.params.userId, function(json) {
     var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
       return {
         title: s.name[0],
         count: s.book_count[0],
         key: s.id[0]._
-      };	
+      };
     });
 
     res.write(JSON.stringify(shelvesData));
@@ -41,9 +45,9 @@ server.get('/shelf/:shelfName', function(req,  res){
     page: req.query.page || 1,
     sort: req.query.sortProp || 'position'
 
-  }, function(json) { 
+  }, function(json) {
     var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
-      var author = b.authors[0].author[0].name[0]; 
+      var author = b.authors[0].author[0].name[0];
       var title = b.title[0];
 
       return {
@@ -54,7 +58,7 @@ server.get('/shelf/:shelfName', function(req,  res){
         title: title
       };
     });
-    
+
     res.write(JSON.stringify({
       raw: json.GoodreadsResponse,
       books: bookArr
