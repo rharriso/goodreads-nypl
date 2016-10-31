@@ -5,7 +5,7 @@ var assign = require('object-assign');
 var reqwest = require('reqwest');
 
 var CHANGE_EVENT = 'change';
-var shelf;
+var books;
 var shelfTitle;
 var sortDir;
 var sortProp;
@@ -17,7 +17,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
   */
   get: function (){
     return {
-      books: shelf.books,
+      books: books,
       sortDir,
       sortProp
     };
@@ -30,7 +30,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
 
   /**
    * @param {function} callback - response message
-   * @returns undefined
+   * @returns {undefined}
    */
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
@@ -44,6 +44,10 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
     const action = payload.action;
 
     switch (action.actionType) {
+      case 'CURR_SHELF_UNSET':
+        books = [];
+        CurrentShelfStore.emitChange();
+        return;
       case 'CURR_SHELF_CHANGE':
         shelfTitle = action.shelfName;
         sortDir = undefined;
@@ -54,7 +58,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
         sortProp = action.sortProp;
         break;
       default:
-        throw new Error('Uknown event: ' + action.actionType);
+        return;
     }
 
     return new Promise(function (resolve, reject){
@@ -66,7 +70,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
         },
         type: 'json',
         success: function (data){
-          shelf = data;
+          books = data.books;
           resolve();
           CurrentShelfStore.emitChange();
         }.bind(this),

@@ -6,28 +6,37 @@ var path = require('path');
 var express = require('express');
 var server = express();
 require('dotenv').config();
-const GOODREADS_EDIT_ACCOUNT_URL = 'https://www.goodreads.com/user/edit';
+//const GOODREADS_EDIT_ACCOUNT_URL = 'https://www.goodreads.com/user/edit';
 
 var goodreads = require('goodreads');
 var gr = new goodreads.client({
-  'key': process.env.GOODREADS_KEY,
-  'secret': process.env.GOODREADS_SECRET
+  key: process.env.GOODREADS_KEY,
+  secret: process.env.GOODREADS_SECRET
 });
 
 server.get('/showUser/:username', function (req, res) {
-  return gr.showUser(req.params.userName, function(json) {
-    res.write(JSON.stringify(json));
+  return gr.showUser(req.params.username, function (json) {
+    const userData = json.GoodreadsResponse.user[0];
+    const resp = {
+      id: userData.id[0],
+      imageUrl: userData.image_url[0],
+      name: userData.name[0],
+      smallImageUrl: userData.small_image_url[0],
+      username: userData.user_name[0]
+    };
+
+    res.write(JSON.stringify(resp));
     return res.end();
   });
 });
 
-server.get('/shelves/:userId', function(req, res){
-  return gr.getShelves(req.params.userId, function(json) {
-    var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function(s){
+server.get('/shelves/:userId', function (req, res){
+  return gr.getShelves(req.params.userId, function (json) {
+    var shelvesData = json.GoodreadsResponse.shelves[0].user_shelf.map(function (s){
       return {
         title: s.name[0],
         count: s.book_count[0],
-        key: s.id[0]._
+        key: s.name[0]
       };
     });
 
@@ -37,24 +46,24 @@ server.get('/shelves/:userId', function(req, res){
 });
 
 
-server.get('/shelf/:shelfName', function(req,  res){
+server.get('/shelf/:shelfName', function (req,  res){
   return gr.getSingleShelf({
     userID: '1309879',
     shelf: req.params.shelfName,
-    per_page: 20,
+    perPage: 20,
     order: req.query.sortDir || 'a',
     page: req.query.page || 1,
     sort: req.query.sortProp || 'position'
 
-  }, function(json) {
-    var bookArr = json.GoodreadsResponse.books[0].book.map(function(b){
+  }, function (json) {
+    var bookArr = json.GoodreadsResponse.books[0].book.map(function (b){
       var author = b.authors[0].author[0].name[0];
       var title = b.title[0];
 
       return {
         author: author,
         imageUrl: b.image_url[0],
-        key: author+'-'+title.replace(' ', '-'),
+        key: author + '-' + title.replace(' ', '-'),
         numPages: b.num_pages[0],
         title: title
       };
@@ -72,7 +81,7 @@ server.get('/shelf/:shelfName', function(req,  res){
 server.use('/', express.static(path.resolve(__dirname, 'client/index.html')));
 server.use(express.static(path.resolve(__dirname, 'client')));
 
-server.configure(function(){
+server.configure(function (){
   server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 

@@ -16,20 +16,25 @@ class ShelfList extends React.Component {
 
   render(){
     return <List className='shelf-list'>
-      {this.state.shelves.map(function(shelf){
+      {this.state.shelves.map(function (shelf){
         return <ShelfListItem shelf={shelf} key={shelf.key}></ShelfListItem>;
       })}
     </List>;
   }
-  
-  componentDidMount(){
-    reqwest({
-      url: '/shelves',
-      type: 'json',
-      success: function(data){
-        this.setState({shelves: data});
-      }.bind(this)
-    });
+
+  componentWillReceiveProps(newProps){
+    if (newProps.userId) {
+      reqwest({
+        url: '/shelves/' + newProps.userId,
+        type: 'json',
+        success: function (data){
+          this.setState({shelves: data});
+        }.bind(this)
+      });
+
+    } else {
+      this.setState({shelves: []});
+    }
   }
 }
 
