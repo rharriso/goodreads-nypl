@@ -25,7 +25,7 @@ var CurrentUserStore = assign({}, EventEmitter.prototype, {
 
   /**
    * @param {function} callback - response message
-   * @returns undefined
+   * @returns {undefined}
    */
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
@@ -41,22 +41,25 @@ var CurrentUserStore = assign({}, EventEmitter.prototype, {
 
     switch (action.actionType) {
       case 'CURR_USERNAME_SET':
-      	username = action.username;
+        username = action.username;
         break;
       case 'CURR_USER_UNSET':
-      	user = undefined;
-      	return;
+        user = undefined;
+        AppDispatcher.handleViewAction({
+          actionType: 'CURR_SHELF_UNSET'
+        });
+        CurrentUserStore.emitChange();
+        return;
       default:
-        throw new Error('Uknown event: ' + action.actionType);
+        return;
     }
 
     return new Promise(function (resolve, reject){
       reqwest({
-        url: '/showUser/' + user,
+        url: '/showUser/' + username,
         type: 'json',
         success: function (data){
           user = data;
-          console.log(user);
           resolve();
           CurrentUserStore.emitChange();
         }.bind(this),

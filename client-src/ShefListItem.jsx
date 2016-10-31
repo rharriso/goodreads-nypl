@@ -6,7 +6,7 @@ class ShelfListItem extends React.Component {
   render(){
     return <ListItem onClick={this.onClick.bind(this)}>{this.props.shelf.title}</ListItem>
   }
-  
+
   onClick(){
     AppDispatcher.handleViewAction({
       actionType: 'CURR_SHELF_CHANGE',
