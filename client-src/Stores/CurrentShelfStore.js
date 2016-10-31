@@ -11,50 +11,53 @@ var sortDir;
 var sortProp;
 
 var CurrentShelfStore = assign({}, EventEmitter.prototype, {
-  
-  /*
+/*
     getter for the current shelf
     @return {object} the current shelf
   */
-  get: function(){
+  get: function (){
     return {
       books: shelf.books,
       sortDir,
-      sortProp,
-    };	
+      sortProp
+    };
   },
-  
-  emitChange: function() {
+
+  emitChange: function (){
     this.emit(CHANGE_EVENT);
   },
 
 
   /**
-   * @param {function} callback
+   * @param {function} callback - response message
+   * @returns undefined
    */
-  addChangeListener: function(callback) {
+  addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
-  
- 
+
+
   /**
    *
-   */  
-  dispatcherIndex: AppDispatcher.register(function(payload) {
-    let action = payload.action;
+   */
+  dispatcherIndex: AppDispatcher.register(function (payload) {
+    const action = payload.action;
 
     switch (action.actionType) {
-    case 'CURR_SHELF_CHANGE': 
-      shelfTitle = action.shelfName;
-      sortDir = undefined;
-      sortProp = undefined;
-      break;
-    case 'SHELF_SORT_CHANGE':
-      sortDir = action.sortDir;
-      sortProp = action.sortProp;
+      case 'CURR_SHELF_CHANGE':
+        shelfTitle = action.shelfName;
+        sortDir = undefined;
+        sortProp = undefined;
+        break;
+      case 'SHELF_SORT_CHANGE':
+        sortDir = action.sortDir;
+        sortProp = action.sortProp;
+        break;
+      default:
+        throw new Error('Uknown event: ' + action.actionType);
     }
 
-    return new Promise(function(resolve, reject){
+    return new Promise(function (resolve, reject){
       reqwest({
         url: '/shelf/' + shelfTitle,
         data: {
@@ -62,12 +65,12 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
           sortDir: payload.action.sortDir
         },
         type: 'json',
-        success: function(data){
+        success: function (data){
           shelf = data;
           resolve();
           CurrentShelfStore.emitChange();
         }.bind(this),
-        error: reject	
+        error: reject
       });
     });
   })
