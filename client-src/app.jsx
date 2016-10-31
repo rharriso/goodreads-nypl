@@ -5,14 +5,15 @@ import ShelfList from './ShelfList.jsx';
 import BookList from './BookList.jsx';
 import CurrentShelfStore from './Stores/CurrentShelfStore';
 
+
 /*
 	Root Application
 */
 class App extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
-      books: [],
+      books: []
     };
   }
 
@@ -23,12 +24,12 @@ class App extends React.Component {
   componentWillUnmount() {
     CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
   }
-  
+
   _onShelfChange(){
     this.setState(CurrentShelfStore.get());
   }
 
-  render (){
+  render(){
     return <MuiThemeProvider>
       <div>
         <div className='flex-row'>
@@ -41,9 +42,9 @@ class App extends React.Component {
       </div>
 		</MuiThemeProvider>;
   }
-	
+
 
 }
-	
-	
+
+
 ReactDOM.render(<App/>, document.getElementById('app'));
