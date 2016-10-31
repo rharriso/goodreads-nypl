@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import ShelfList from './ShelfList.jsx';
-import BookList from './BookList.jsx';
+
+import BookList from './BookList';
 import CurrentShelfStore from './Stores/CurrentShelfStore';
+import ShelfList from './ShelfList';
+import UserLabel from './UserLabel';
 
 
 /*
@@ -32,6 +34,7 @@ class App extends React.Component {
   render(){
     return <MuiThemeProvider>
       <div>
+        <UserLabel />
         <div className='flex-row'>
           <ShelfList />
           <BookList
