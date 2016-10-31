@@ -34,7 +34,7 @@ class App extends React.Component {
   render(){
     return <MuiThemeProvider>
       <div>
-        <UserLabel />
+        <UserLabel user={this.state.user} />
         <div className='flex-row'>
           <ShelfList />
           <BookList
@@ -45,8 +45,6 @@ class App extends React.Component {
       </div>
 		</MuiThemeProvider>;
   }
-
-
 }
 
 

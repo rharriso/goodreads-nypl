@@ -14,9 +14,10 @@ var gr = new goodreads.client({
   'secret': process.env.GOODREADS_SECRET
 });
 
-server.get('/userInfo', function () {
-  gr.showUser(req.params.userName, function(json) {
-      console.log(json);
+server.get('/showUser/:username', function (req, res) {
+  return gr.showUser(req.params.userName, function(json) {
+    res.write(JSON.stringify(json));
+    return res.end();
   });
 });
 
