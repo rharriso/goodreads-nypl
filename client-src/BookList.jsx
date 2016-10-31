@@ -22,7 +22,7 @@ const HEADER_ITEMS = [
   Book List
   */
 class BookList extends React.Component {
-  render (){
+  render(){
     return <div className='book-list'>
       <Table>
         <TableHeader>
@@ -38,7 +38,7 @@ class BookList extends React.Component {
        </TableHeader>
 
         <TableBody>
-          {this.props.books.map(function(book){
+          {this.props.books.map(function (book){
             return <BookListItem book={book} key={book.key}></BookListItem>;
           })}
         </TableBody>
@@ -46,11 +46,11 @@ class BookList extends React.Component {
     </div>;
   }
 
-  
+
   static get defaultProperties(){
     return {
-      books: []	
-    }
+      books: []
+    };
   }
 };
 
