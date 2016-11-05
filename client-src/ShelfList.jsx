@@ -7,34 +7,70 @@ import ShelfListItem from './ShefListItem.jsx';
   Shelf List
 */
 class ShelfList extends React.Component {
-  constructor(params){
-    super(params);
+
+  /**
+   * Initialize the state of the component.
+   * @param {Object} props - properties passsed to component
+   * @returns {undefined}
+   */
+  constructor(props){
+    super(props);
     this.state = {
       shelves: []
     };
   }
 
+
+  /**
+   * Load shelves for the passed user id
+   * @param {Integer} userId the id of the user to load
+   * @returns {undefined}
+   */
+  loadShelvesForUserId(userId){
+    if (userId) {
+      reqwest({
+        url: '/shelves/' + userId,
+        type: 'json',
+        success: function (data){
+          this.setState({shelves: data});
+        }.bind(this)
+      });
+    }
+  }
+
+
+  /**
+   * Load shelves on mound
+   * @returns {undefined}
+   */
+  componentWillMount(){
+    this.loadShelvesForUserId(this.props.userId);
+  }
+
+
+  /**
+   * try to load the shelves on prop change
+   * @param {Object} newProps the new properties being passed
+   * @returns {undefined}
+   */
+  componentWillReceiveProps(newProps){
+    if (newProps.userId) {
+      this.loadShelvesForUserId(newProps.userId);
+    } else {
+      this.setState({shelves: []});
+    }
+  }
+
+
+  /**
+   *
+   */
   render(){
     return <List className='shelf-list'>
       {this.state.shelves.map(function (shelf){
         return <ShelfListItem shelf={shelf} key={shelf.key}></ShelfListItem>;
       })}
     </List>;
-  }
-
-  componentWillReceiveProps(newProps){
-    if (newProps.userId) {
-      reqwest({
-        url: '/shelves/' + newProps.userId,
-        type: 'json',
-        success: function (data){
-          this.setState({shelves: data});
-        }.bind(this)
-      });
-
-    } else {
-      this.setState({shelves: []});
-    }
   }
 }
 
