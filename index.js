@@ -2,6 +2,7 @@
 // # SimpleServer
 //
 // A simple chat server using Socket.IO, Express, and Async.
+var _ = require('lodash');
 var path = require('path');
 var express = require('express');
 var server = express();
@@ -13,6 +14,30 @@ var gr = new goodreads.client({
   key: process.env.GOODREADS_KEY,
   secret: process.env.GOODREADS_SECRET
 });
+
+
+function processBookResponse(res, books) {
+  var bookArr = books.map(function (b){
+    var author = _.get(b, 'b.authors[0].author[0].name[0]');
+    author = author || _.get(b, 'b..author[0].name[0]');
+    var title = b.title[0];
+
+    return {
+      author: author,
+      imageUrl: b.image_url[0],
+      key: author + '-' + title.replace(' ', '-'),
+      numPages: _.get(b, 'num_pages[0]'),
+      title: title
+    };
+  });
+
+  res.write(JSON.stringify({
+    books: bookArr
+  }));
+
+  return res.end();
+}
+
 
 server.get('/showUser/:username', function (req, res) {
   return gr.showUser(req.params.username, function (json) {
@@ -29,6 +54,7 @@ server.get('/showUser/:username', function (req, res) {
     return res.end();
   });
 });
+
 
 server.get('/shelves/:userId', function (req, res){
   return gr.getShelves(req.params.userId, function (json) {
@@ -56,25 +82,17 @@ server.get('/shelf/:shelfName', function (req,  res){
     sort: req.query.sortProp || 'position'
 
   }, function (json) {
-    var bookArr = json.GoodreadsResponse.books[0].book.map(function (b){
-      var author = b.authors[0].author[0].name[0];
-      var title = b.title[0];
+    const books = json.GoodreadsResponse.books[0].book;
+    return processBookResponse(res, books);
+  });
+});
 
-      return {
-        author: author,
-        imageUrl: b.image_url[0],
-        key: author + '-' + title.replace(' ', '-'),
-        numPages: b.num_pages[0],
-        title: title
-      };
+server.get('/search', function (req,  res){
+  return gr.searchBooks(req.query.q, function (json) {
+    const books = json.GoodreadsResponse.search[0].results[0].work.map(function(result){
+      return result.best_book[0];
     });
-
-    res.write(JSON.stringify({
-      raw: json.GoodreadsResponse,
-      books: bookArr
-    }));
-
-    return res.end();
+    return processBookResponse(res, books);
   });
 });
 
@@ -85,6 +103,6 @@ server.configure(function (){
   server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function(){
+server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function (){
   console.log('Goodreads NYPL server listening at', server.address + ':' + server.port);
 });

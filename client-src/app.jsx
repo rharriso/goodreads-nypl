@@ -5,6 +5,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BookList from './BookList';
 import CurrentShelfStore from './Stores/CurrentShelfStore';
 import CurrentUserStore from './Stores/CurrentUserStore';
+import SearchStore from './Stores/SearchStore';
+import SearchBar from './SearchBar';
 import ShelfList from './ShelfList';
 import UserLabel from './UserLabel';
 
@@ -28,6 +30,7 @@ class App extends React.Component {
   componentDidMount() {
     CurrentShelfStore.addChangeListener(this._onShelfChange.bind(this));
     CurrentUserStore.addChangeListener(this._onUserChange.bind(this));
+    SearchStore.addChangeListener(this._onSearchChange.bind(this));
   }
 
 
@@ -38,6 +41,7 @@ class App extends React.Component {
   componentWillUnmount() {
     CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
     CurrentUserStore.removeChangeListener(this._onUserChange.bind(this));
+    SearchStore.removeChangeListener(this._onSearchChange.bind(this));
   }
 
 
@@ -63,6 +67,16 @@ class App extends React.Component {
     });
   }
 
+
+  /**
+   * set the current search state on change
+   * @returns {undefined}
+   */
+  _onSearchChange(){
+    this.setState(SearchStore.get());
+  }
+
+
   /**
    * reder the book and shelf lists
    * @param {Number} userId - the userId to show shelfs for
@@ -72,15 +86,16 @@ class App extends React.Component {
    * @returns {React.Component} the book and shelf list
    */
   renderShelfList({userId, books, sortProp, sortDir}){
-    return (
-        <div className='flex-row'>
-          <ShelfList userId={userId}/>
-          <BookList
-            books={books}
-            sortDir={sortDir}
-            sortProp={sortProp}/>
-        </div>
-      );
+    return ([
+      <SearchBar/>,
+      <div className='flex-row'>
+        <ShelfList userId={userId}/>
+        <BookList
+          books={books}
+          sortDir={sortDir}
+          sortProp={sortProp}/>
+      </div>
+    ]);
   }
 
   /**
