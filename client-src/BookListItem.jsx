@@ -11,8 +11,16 @@ const AUDIO_BOOK_CODE = 'n';
 const E_BOOK_CODE = 'z';
 const TEXT_CODE = 'a';
 
+/**
+ * BookListItem item in the book list
+ */
 class BookListItem extends React.Component {
 
+  /**
+   * construct search triterion based on the passed code
+   * @param {String} formatCode defined by NYPL (find in advanced search page)
+   * @returns {String} search url for format
+   */
   _searchCriterion(formatCode){
     if (!formatCode) {
       throw new Error('formatCode required');
@@ -26,6 +34,10 @@ class BookListItem extends React.Component {
   }
 
 
+  /**
+   * render the compoenent
+   * @returns {Object} react component
+   */
   render(){
     return <TableRow>
       <TableRowColumn>
