@@ -13,6 +13,7 @@ const HEADER_ITEMS = [
   {label: 'Image', sortProp: 'position'},
   {label: 'Title', sortProp: 'title'},
   {label: 'Page Count', sortProp: 'num_pages'},
+  {label: 'Goodreads'},
   {label: 'Audio'},
   {label: 'E-Book'},
   {label: 'Text'}

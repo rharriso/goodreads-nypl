@@ -15,29 +15,37 @@ class BookListItem extends React.Component {
 
   _searchCriterion(formatCode){
     if (!formatCode) {
-      throw new Error("formatCode required");
+      throw new Error('formatCode required');
     }
 
-    var lintTitle = this.props.book.title.replace(/\(.*\)/igm, "");
-    
+    var lintTitle = this.props.book.title.replace(/\(.*\)/igm, '');
+
     return `a:(${this.props.book.author}) ` +
            `t:(${lintTitle}) ` +
            `f:${formatCode} `;
   }
-   
 
-	render(){
-		return <TableRow>
+
+  render(){
+    return <TableRow>
       <TableRowColumn>
           <Avatar src={this.props.book.imageUrl} />
       </TableRowColumn>
-      
+
       <TableRowColumn>{this.props.book.title}</TableRowColumn>
       <TableRowColumn>{this.props.book.numPages}</TableRowColumn>
-      
+
+    <TableRowColumn>
+        <FlatButton
+          label="Goodreads"
+          href={`https://www.goodreads.com/book/show/${this.props.book.id}`}
+        />
+      </TableRowColumn>
+
+
       <TableRowColumn>
         <FlatButton
-          label="audiobook" 
+          label="audiobook"
           href={
             'http://browse.nypl.org/iii/encore/search/C__S' +
             this._searchCriterion(AUDIO_BOOK_CODE) +
@@ -45,10 +53,10 @@ class BookListItem extends React.Component {
           }
         />
       </TableRowColumn>
-      
+
       <TableRowColumn>
         <FlatButton
-          label="e-book" 
+          label="e-book"
           href={
             'http://browse.nypl.org/iii/encore/search/C__S' +
             this._searchCriterion(E_BOOK_CODE) +
@@ -56,10 +64,10 @@ class BookListItem extends React.Component {
           }
         />
       </TableRowColumn>
-      
+
       <TableRowColumn>
         <FlatButton
-          label="text" 
+          label="text"
           href={
             'http://browse.nypl.org/iii/encore/search/C__S' +
             this._searchCriterion(TEXT_CODE) +
@@ -67,8 +75,8 @@ class BookListItem extends React.Component {
           }
         />
       </TableRowColumn>
-    </TableRow>
-	}
+    </TableRow>;
+  }
 }
 
 export default BookListItem;

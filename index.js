@@ -19,10 +19,11 @@ var gr = new goodreads.client({
 function processBookResponse(res, books) {
   var bookArr = books.map(function (b){
     var author = _.get(b, 'b.authors[0].author[0].name[0]');
-    author = author || _.get(b, 'b..author[0].name[0]');
+    author = author || _.get(b, 'author[0].name[0]');
     var title = b.title[0];
 
     return {
+      id: b.id[0]._,
       author: author,
       imageUrl: b.image_url[0],
       key: author + '-' + title.replace(' ', '-'),
