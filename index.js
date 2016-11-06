@@ -17,6 +17,8 @@ var gr = new goodreads.client({
 
 
 function processBookResponse(res, books) {
+  if(!books) return [];
+
   var bookArr = books.map(function (b){
     var author = _.get(b, 'b.authors[0].author[0].name[0]');
     author = author || _.get(b, 'author[0].name[0]');
@@ -90,10 +92,16 @@ server.get('/shelf/:shelfName', function (req,  res){
 
 server.get('/search', function (req,  res){
   return gr.searchBooks(req.query.q, function (json) {
+
+    try { 
     const books = json.GoodreadsResponse.search[0].results[0].work.map(function(result){
       return result.best_book[0];
     });
     return processBookResponse(res, books);
+    } catch (e) {
+      res.write(JSON.stringify({books: []}));
+      return res.end();
+    }
   });
 });
 
