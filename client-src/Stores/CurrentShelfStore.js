@@ -1,6 +1,8 @@
 var AppDispatcher = require('../Dispatchers/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var Promise = require('es6-promise').Promise;
+
+var CurrentUserStore = require('./CurrentUserStore');
 var assign = require('object-assign');
 var reqwest = require('reqwest');
 
@@ -65,6 +67,7 @@ var CurrentShelfStore = assign({}, EventEmitter.prototype, {
       reqwest({
         url: '/shelf/' + shelfTitle,
         data: {
+          userId: CurrentUserStore.get().user.id,
           sortProp: payload.action.sortProp,
           sortDir: payload.action.sortDir
         },

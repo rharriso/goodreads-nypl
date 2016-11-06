@@ -17,7 +17,9 @@ var gr = new goodreads.client({
 
 
 function processBookResponse(res, books) {
-  if(!books) return [];
+  if (!books) {
+    return [];
+  }
 
   var bookArr = books.map(function (b){
     var author = _.get(b, 'b.authors[0].author[0].name[0]');
@@ -77,7 +79,7 @@ server.get('/shelves/:userId', function (req, res){
 
 server.get('/shelf/:shelfName', function (req,  res){
   return gr.getSingleShelf({
-    userID: '1309879',
+    userID: req.query.userId,
     shelf: req.params.shelfName,
     perPage: 20,
     order: req.query.sortDir || 'a',
@@ -85,23 +87,17 @@ server.get('/shelf/:shelfName', function (req,  res){
     sort: req.query.sortProp || 'position'
 
   }, function (json) {
-    const books = json.GoodreadsResponse.books[0].book;
+    const books = _.get(json, 'GoodreadsResponse.books[0].book');
     return processBookResponse(res, books);
   });
 });
 
 server.get('/search', function (req,  res){
   return gr.searchBooks(req.query.q, function (json) {
-
-    try { 
-    const books = json.GoodreadsResponse.search[0].results[0].work.map(function(result){
+    const books = _.get(json, 'GoodreadsResponse.search[0].results[0].work', []).map(function(result){
       return result.best_book[0];
     });
     return processBookResponse(res, books);
-    } catch (e) {
-      res.write(JSON.stringify({books: []}));
-      return res.end();
-    }
   });
 });
 
