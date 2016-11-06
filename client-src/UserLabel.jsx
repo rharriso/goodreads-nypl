@@ -1,5 +1,13 @@
 import React from 'react';
 import AppDispatcher from './Dispatchers/AppDispatcher';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+
+const wrapperStyle = {
+  display: 'flex',
+  'justify-content': 'center'
+};
 
 /**
  * UserLabel
@@ -41,10 +49,19 @@ class UserLabel extends React.Component {
       );
     } else {
       return (
-        <form onSubmit={this.onSubmit.bind(this)}>
-          <input placeholder='username' value={this.state.username} onChange={this.handleChange.bind(this)} />
-          <input type="submit" value="find user" />
-        </form>
+        <div style={wrapperStyle}>
+          <div>
+            <TextField
+              placeholder='username'
+              value={this.state.username}
+              onEnterKeyDown={this.onSubmit.bind(this)}
+              onChange={this.handleChange.bind(this)} />
+            <RaisedButton
+              type='submit'
+              onClick={this.onSubmit.bind(this)}
+              label="Find User" primary={true}/>
+          </div>
+        </div>
       );
     }
   }
