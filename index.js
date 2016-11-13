@@ -22,7 +22,7 @@ function processBookResponse(res, books) {
   }
 
   var bookArr = books.map(function (b){
-    var author = _.get(b, 'b.authors[0].author[0].name[0]');
+    var author = _.get(b, 'authors[0].author[0].name[0]');
     author = author || _.get(b, 'author[0].name[0]');
     var title = b.title[0];
 
