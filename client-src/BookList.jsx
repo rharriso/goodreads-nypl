@@ -9,14 +9,17 @@ import React from 'react';
 import BookListItem from './BookListItem.jsx';
 import BookListHeader from './BookListHeader.jsx';
 
+const SMALL_COL_STYLE = {width: 80, paddingLeft: 10, paddingRight: 10};
+
 const HEADER_ITEMS = [
-  {label: 'Image', sortProp: 'position'},
+  {label: 'Image', sortProp: 'position', style: SMALL_COL_STYLE},
   {label: 'Title', sortProp: 'title'},
-  {label: 'Page Count', sortProp: 'num_pages'},
-  {label: 'Goodreads'},
-  {label: 'Audio'},
-  {label: 'E-Book'},
-  {label: 'Text'}
+  {label: 'Author', sortProp: 'author'},
+  {label: 'Page Count', sortProp: 'num_pages', style: SMALL_COL_STYLE},
+  {label: 'Goodreads', style: SMALL_COL_STYLE},
+  {label: 'Audio', style: SMALL_COL_STYLE},
+  {label: 'E-Book', style: SMALL_COL_STYLE},
+  {label: 'Text', style: SMALL_COL_STYLE}
 ];
 
 /*
@@ -28,7 +31,7 @@ class BookList extends React.Component {
       <Table>
         <TableHeader>
           { HEADER_ITEMS.map((item) =>{
-            return <TableHeaderColumn>
+            return <TableHeaderColumn style={item.style}>
               <BookListHeader
                 current={this.props.sortProp === item.sortProp}
                 label={item.label}

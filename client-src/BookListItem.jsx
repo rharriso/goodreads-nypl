@@ -10,6 +10,7 @@ import {TableRow, TableRowColumn} from 'material-ui/Table';
 const AUDIO_BOOK_CODE = 'n';
 const E_BOOK_CODE = 'z';
 const TEXT_CODE = 'a';
+const SMALL_COL_STYLE = {width: 80, paddingLeft: 10, paddingRight: 10};
 
 /**
  * BookListItem item in the book list
@@ -40,24 +41,25 @@ class BookListItem extends React.Component {
    */
   render(){
     return <TableRow>
-      <TableRowColumn>
+      <TableRowColumn style={SMALL_COL_STYLE}>
           <Avatar src={this.props.book.imageUrl} />
       </TableRowColumn>
 
       <TableRowColumn>{this.props.book.title}</TableRowColumn>
-      <TableRowColumn>{this.props.book.numPages}</TableRowColumn>
+      <TableRowColumn>{this.props.book.author}</TableRowColumn>
+      <TableRowColumn style={SMALL_COL_STYLE}>{this.props.book.numPages}</TableRowColumn>
 
-    <TableRowColumn>
+    <TableRowColumn style={SMALL_COL_STYLE}>
         <FlatButton
-          label="Goodreads"
+          label="GR"
           href={`https://www.goodreads.com/book/show/${this.props.book.id}`}
         />
       </TableRowColumn>
 
 
-      <TableRowColumn>
+      <TableRowColumn style={SMALL_COL_STYLE}>
         <FlatButton
-          label="audiobook"
+          label="AUDIO"
           href={
             'http://browse.nypl.org/iii/encore/search/C__S' +
             this._searchCriterion(AUDIO_BOOK_CODE) +
@@ -66,9 +68,9 @@ class BookListItem extends React.Component {
         />
       </TableRowColumn>
 
-      <TableRowColumn>
+      <TableRowColumn style={SMALL_COL_STYLE}>
         <FlatButton
-          label="e-book"
+          label="ebook"
           href={
             'http://browse.nypl.org/iii/encore/search/C__S' +
             this._searchCriterion(E_BOOK_CODE) +
@@ -77,7 +79,7 @@ class BookListItem extends React.Component {
         />
       </TableRowColumn>
 
-      <TableRowColumn>
+      <TableRowColumn style={SMALL_COL_STYLE}>
         <FlatButton
           label="text"
           href={
