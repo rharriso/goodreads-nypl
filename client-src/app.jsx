@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import BookList from './BookList';
@@ -9,6 +10,8 @@ import SearchStore from './Stores/SearchStore';
 import SearchBar from './SearchBar';
 import ShelfList from './ShelfList';
 import UserLabel from './UserLabel';
+
+import store from './Stores/application-store';
 
 
 /*
@@ -113,4 +116,7 @@ class App extends React.Component {
 }
 
 
-ReactDOM.render(<App/>, document.getElementById('app'));
+ReactDOM.render(
+  <Provider store={store}><App/></Provider>,
+  document.getElementById('app')
+);
