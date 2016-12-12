@@ -2,6 +2,8 @@ import React from 'react';
 import AppDispatcher from './Dispatchers/AppDispatcher';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { actions } from './Stores/application-store';
+import { connect } from 'react-redux'
 
 
 const wrapperStyle = {
@@ -20,18 +22,11 @@ class UserLabel extends React.Component {
 
   onSubmit(e){
     e.preventDefault();
-    AppDispatcher.handleViewAction({
-      actionType: 'CURR_USERNAME_SET',
-      username: this.state.username
-    });
+    this.props.dispatch(actions.searchUser(this.state.username));
   }
 
-  onUnsetClick(e){
-    e.preventDefault();
-    AppDispatcher.handleViewAction({
-      actionType: 'CURR_USER_UNSET',
-      username: this.state.username
-    });
+  onUnsetClick(){
+    this.props.dispatch(actions.setUser(undefined));
   }
 
   handleChange(e){
@@ -67,4 +62,14 @@ class UserLabel extends React.Component {
   }
 }
 
-export default UserLabel;
+
+/**
+ *
+ */
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect (mapStateToProps)(UserLabel);
