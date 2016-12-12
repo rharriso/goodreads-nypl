@@ -19,6 +19,7 @@
     "object-assign": "^4.1.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "react-promise": "^1.1.2",
     "reqwest": "^2.0.5",
     "socket.io": "~0.9.14"
   },
@@ -45,6 +46,7 @@
     "material-ui": "^0.15.4",
     "react-tap-event-plugin": "^1.0.0",
     "reactify": "^1.1.1",
+    "redux-devtools": "^3.3.1",
     "stream-replace": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
