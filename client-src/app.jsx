@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import BookList from './BookList';
@@ -32,7 +32,6 @@ class App extends React.Component {
    */
   componentDidMount() {
     CurrentShelfStore.addChangeListener(this._onShelfChange.bind(this));
-    CurrentUserStore.addChangeListener(this._onUserChange.bind(this));
     SearchStore.addChangeListener(this._onSearchChange.bind(this));
   }
 
@@ -43,7 +42,6 @@ class App extends React.Component {
    */
   componentWillUnmount() {
     CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
-    CurrentUserStore.removeChangeListener(this._onUserChange.bind(this));
     SearchStore.removeChangeListener(this._onSearchChange.bind(this));
   }
 
@@ -56,21 +54,6 @@ class App extends React.Component {
     this.setState(CurrentShelfStore.get());
   }
 
-
-  /**
-   * set the current user and userid state on change
-   * @returns {undefined}
-   */
-  _onUserChange(){
-    const user = CurrentUserStore.get().user;
-    const userId = user && user.id;
-    this.setState({
-      user: user,
-      userId: userId
-    });
-  }
-
-
   /**
    * set the current search state on change
    * @returns {undefined}
@@ -81,42 +64,40 @@ class App extends React.Component {
 
 
   /**
-   * reder the book and shelf lists
-   * @param {Number} userId - the userId to show shelfs for
-   * @param {Array} books - set of books to display
-   * @param {string} sortProp - property to sort the books on
-   * @param {string} sortDir - (a|d) what direction to sort the books
-   * @returns {React.Component} the book and shelf list
-   */
-  renderShelfList({userId, books, sortProp, sortDir}){
-    return ([
-      <SearchBar/>,
-      <div className='flex-row'>
-        <ShelfList userId={userId}/>
-        <BookList
-          books={books}
-          sortDir={sortDir}
-          sortProp={sortProp}/>
-      </div>
-    ]);
-  }
-
-  /**
    * reder the user selection and maybe the shelf list
    * @returns {React.Component} - the root of the app
    */
   render(){
     return <MuiThemeProvider>
-      <div>
-        <UserLabel user={this.state.user} />
-        { this.state.user && this.renderShelfList(this.state)}
-      </div>
+    	<div>
+	      <UserLabel user={this.props.user} />
+		    <div>
+		    	{ !!this.props.user && (
+				        <SearchBar/>,
+					      <div className='flex-row'>
+					        <ShelfList userId={this.props.userId}/>
+					        <BookList {...this.state} />
+					     </div>
+		    	)}
+    		</div>
+    	</div>
 		</MuiThemeProvider>;
   }
 }
 
 
+const mapStateToProps = function (state) {
+	return {
+		user: state.user,
+		userId: state.user && state.user.id
+	}
+}
+
+
+const ConnectedAp = connect(mapStateToProps)(App);
+
+
 ReactDOM.render(
-  <Provider store={store}><App/></Provider>,
+  <Provider store={store}><ConnectedAp/></Provider>,
   document.getElementById('app')
 );
