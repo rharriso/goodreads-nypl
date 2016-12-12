@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import 'whatwg-fetch';
+import 'whatwg-fetch'; /* global fetch */
 import thunk from 'redux-thunk';
 
 /**
@@ -10,8 +10,11 @@ const reducer = (state = {}, action) => {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
-    case 'UPDATE_USER':
+    case 'SET_CURR_USER':
       newState.user = action.user;
+      break;
+    case 'SET_CURR_SHELF':
+    	newState.shelf = action.shelf
       break;
     default:
       console.error(`unhandled action ${action.type}`);
@@ -25,23 +28,15 @@ const reducer = (state = {}, action) => {
  * Store
  */
 const store = createStore(
-  reducer,
-  applyMiddleware(thunk)
+  reducer
 );
 
-
-
-/**
- * get the user data
- */
-const fetchUser = function (username) {
-  return fetch(`/showUser/${username}`);
-};
 
 /*
  * actions
  */
 const actions = {};
+
 
 /**
  * set the current user
@@ -50,26 +45,22 @@ const actions = {};
  */
 actions.setUser = (user) => {
   return {
-    type: 'UPDATE_USER',
+    type: 'SET_CURR_USER',
     user
   };
 };
 
+
 /**
- * construct search request and dispatch actions
- * @param {string} username - the username to search for
- * @returns {function} method that requests the user search
- * and dispatches after the response
+ *
  */
-actions.searchUser = (username) => {
-  return function (dispatch) {
-    return dispatch(()=> {
-      fetchUser(username)
-        .then((response) => response.json())
-        .then((user) => dispatch(actions.setUser(user)));
-    });
+actions.setShelf = (shelf) => {
+  return {
+    type: 'SET_CURR_SHELF',
+    shelf
   };
 };
+
 
 export { actions };
 export default store;

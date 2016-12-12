@@ -1,10 +1,10 @@
 import React from 'react';
-import AppDispatcher from './Dispatchers/AppDispatcher';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import { actions } from './Stores/application-store';
 import { connect } from 'react-redux'
+import 'whatwg-fetch'; /* global fetch */
 
+import { actions } from './Stores/application-store';
 
 const wrapperStyle = {
   display: 'flex',
@@ -21,8 +21,11 @@ class UserLabel extends React.Component {
   }
 
   onSubmit(e){
-    e.preventDefault();
-    this.props.dispatch(actions.searchUser(this.state.username));
+	  fetch(`/showUser/${this.state.username}`)
+	  	.then((response) => response.json())
+    	.then((user) => {
+    		this.props.dispatch(actions.setUser(user));
+    	});
   }
 
   onUnsetClick(){

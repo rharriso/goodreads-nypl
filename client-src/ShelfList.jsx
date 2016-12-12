@@ -1,7 +1,7 @@
 import List from 'material-ui/List/List';
 import React from 'react';
 import 'whatwg-fetch'; /* global fetch*/
-import ShelfListItem from './ShefListItem.jsx';
+import ShelfListItem from './ShelfListItem.jsx';
 
 /*
   Shelf List
