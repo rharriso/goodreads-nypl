@@ -1,6 +1,6 @@
 import List from 'material-ui/List/List';
 import React from 'react';
-import reqwest from 'reqwest';
+import 'whatwg-fetch'; /* global fetch*/
 import ShelfListItem from './ShefListItem.jsx';
 
 /*
@@ -28,13 +28,9 @@ class ShelfList extends React.Component {
    */
   loadShelvesForUserId(userId){
     if (userId) {
-      reqwest({
-        url: '/shelves/' + userId,
-        type: 'json',
-        success: function (data){
-          this.setState({shelves: data});
-        }.bind(this)
-      });
+    	fetch(`/shelves/${userId}`)
+    		.then((response) => response.json())
+    		.then((shelves) => this.setState({shelves: shelves}));
     }
   }
 
