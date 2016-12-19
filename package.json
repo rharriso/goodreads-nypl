@@ -2,7 +2,8 @@
   "name": "goodreads-nypl",
   "version": "0.0.0",
   "engines": {
-    "node": "6.9.1"
+    "node": "6.9.1",
+    "npm": "2.15.11"
   },
   "description": "Connect goodreads with the NYPL.",
   "main": "index.js",
