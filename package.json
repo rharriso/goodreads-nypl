@@ -22,7 +22,7 @@
     "es6-promise": "^4.0.3",
     "events": "^1.1.1",
     "express": "~3.2.4",
-    "goodreads": "git@github.com:rharriso/node-goodreads.git#master",
+    "goodreads": "0.1.0",
     "lodash": "^4.17.2",
     "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.0",
