@@ -10,6 +10,7 @@
   "repository": "",
   "author": "Ross Harrison <ross.td.harrison@gmail.com>",
   "scripts": {
+    "start": "node index.js",
     "dev": "gulp serve"
   },
   "dependencies": {
