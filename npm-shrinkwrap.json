@@ -120,9 +120,9 @@
       "resolved": "https://registry.npmjs.org/fresh/-/fresh-0.1.0.tgz"
     },
     "goodreads": {
-      "version": "0.0.5",
-      "from": "git+ssh://git@github.com/rharriso/node-goodreads.git#master",
-      "resolved": "git+ssh://git@github.com/rharriso/node-goodreads.git#b9bd97cc7c76c55a91e97175cc4d788e06b8328c"
+      "version": "0.1.0",
+      "from": "goodreads@0.1.0",
+      "resolved": "https://registry.npmjs.org/goodreads/-/goodreads-0.1.0.tgz"
     },
     "iconv-lite": {
       "version": "0.4.15",
