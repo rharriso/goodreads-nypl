@@ -108,6 +108,9 @@ server.configure(function (){
   server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
-server.listen(process.env.PORT || 3000, process.env.IP || '0.0.0.0', function (){
-  console.log('Goodreads NYPL server listening at', server.address + ':' + server.port);
+const PORT = process.env.PORT || 3000;
+const IP = process.env.IP || '0.0.0.0';
+
+server.listen(PORT, IP, function (){
+  console.log('Goodreads NYPL server listening at', IP + ':' + PORT);
 });
