@@ -1,11 +1,19 @@
 {
   "name": "goodreads-nypl",
   "version": "0.0.0",
+  "engines": {
+    "node": "6.9.1",
+    "npm": "3.10.8"
+  },
   "description": "Connect goodreads with the NYPL.",
   "main": "index.js",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rharriso/goodreads-nypl"
+  },
   "author": "Ross Harrison <ross.td.harrison@gmail.com>",
   "scripts": {
+    "start": "gulp scripts && node index.js",
     "dev": "gulp serve"
   },
   "dependencies": {
@@ -14,7 +22,7 @@
     "es6-promise": "^4.0.3",
     "events": "^1.1.1",
     "express": "~3.2.4",
-    "goodreads": "git@github.com:rharriso/node-goodreads.git#master",
+    "goodreads": "0.1.0",
     "lodash": "^4.17.2",
     "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.0",
