@@ -7,7 +7,7 @@
   },
   "description": "Connect goodreads with the NYPL.",
   "main": "index.js",
-  "repository": "",
+  "repository": "https://github.com/rharriso/goodreads-nypl.git",
   "author": "Ross Harrison <ross.td.harrison@gmail.com>",
   "scripts": {
     "start": "node index.js",
