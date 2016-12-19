@@ -13,7 +13,7 @@
   },
   "author": "Ross Harrison <ross.td.harrison@gmail.com>",
   "scripts": {
-    "start": "node index.js",
+    "start": "gulp scripts && node index.js",
     "dev": "gulp serve"
   },
   "dependencies": {
