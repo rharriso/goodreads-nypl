@@ -89,7 +89,7 @@ class App extends React.Component {
 const mapStateToProps = function (state) {
   return {
     shelf: state.shelf,
-    book: state.shelf && state.shelf.books,
+    books: (state.shelf && state.shelf.books) || [],
     user: state.user,
     userId: state.user && state.user.id
   };
