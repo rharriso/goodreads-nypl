@@ -9,8 +9,8 @@ var server = express();
 require('dotenv').config();
 //const GOODREADS_EDIT_ACCOUNT_URL = 'https://www.goodreads.com/user/edit';
 
-var goodreads = require('goodreads');
-var gr = new goodreads.client({
+var { client: GoodReadsClient } = require('goodreads');
+var gr = new GoodReadsClient({
   key: process.env.GOODREADS_KEY,
   secret: process.env.GOODREADS_SECRET
 });
@@ -94,7 +94,7 @@ server.get('/shelf/:shelfName', function (req,  res){
 
 server.get('/search', function (req,  res){
   return gr.searchBooks(req.query.q, function (json) {
-    const books = _.get(json, 'GoodreadsResponse.search[0].results[0].work', []).map(function(result){
+    const books = _.get(json, 'GoodreadsResponse.search[0].results[0].work', []).map(function (result){
       return result.best_book[0];
     });
     return processBookResponse(res, books);

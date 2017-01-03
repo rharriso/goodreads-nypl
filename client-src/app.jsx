@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import BookList from './BookList';
 import CurrentShelfStore from './Stores/CurrentShelfStore';
-import CurrentUserStore from './Stores/CurrentUserStore';
 import SearchStore from './Stores/SearchStore';
 import SearchBar from './SearchBar';
 import ShelfList from './ShelfList';
@@ -15,7 +14,7 @@ import store from './Stores/application-store';
 
 
 /*
-	Root Application
+Root Application
 */
 class App extends React.Component {
   constructor(props) {
@@ -26,10 +25,10 @@ class App extends React.Component {
   }
 
 
-  /**
-   * bind to store changes on mount
-   * @returns {undefined}
-   */
+/**
+  * bind to store changes on mount
+  * @returns {undefined}
+  */
   componentDidMount() {
     CurrentShelfStore.addChangeListener(this._onShelfChange.bind(this));
     SearchStore.addChangeListener(this._onSearchChange.bind(this));
@@ -37,9 +36,9 @@ class App extends React.Component {
 
 
   /**
-   * unbind to store changes on unmount
-   * @returns {undefined}
-   */
+  * unbind to store changes on unmount
+  * @returns {undefined}
+  */
   componentWillUnmount() {
     CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
     SearchStore.removeChangeListener(this._onSearchChange.bind(this));
@@ -47,51 +46,54 @@ class App extends React.Component {
 
 
   /**
-   * set the current store state on change
-   * @returns {undefined}
-   */
+  * set the current store state on change
+  * @returns {undefined}
+  */
   _onShelfChange(){
     this.setState(CurrentShelfStore.get());
   }
 
+
   /**
-   * set the current search state on change
-   * @returns {undefined}
-   */
+  * set the current search state on change
+  * @returns {undefined}
+  */
   _onSearchChange(){
     this.setState(SearchStore.get());
   }
 
 
   /**
-   * reder the user selection and maybe the shelf list
-   * @returns {React.Component} - the root of the app
-   */
+  * reder the user selection and maybe the shelf list
+  * @returns {React.Component} - the root of the app
+  */
   render(){
     return <MuiThemeProvider>
-    	<div>
-	      <UserLabel user={this.props.user} />
-		    <div>
-		    	{ !!this.props.user && (
-				        <SearchBar/>,
-					      <div className='flex-row'>
-					        <ShelfList userId={this.props.userId}/>
-					        <BookList {...this.state} />
-					     </div>
-		    	)}
-    		</div>
-    	</div>
-		</MuiThemeProvider>;
+      <div>
+        <UserLabel user={this.props.user} />
+        <div>
+          { !!this.props.user && (
+            <SearchBar/>,
+            <div className='flex-row'>
+              <ShelfList userId={this.props.userId}/>
+              <BookList books={ this.props.books } />
+            </div>
+          )}
+        </div>
+      </div>
+    </MuiThemeProvider>;
   }
 }
 
 
 const mapStateToProps = function (state) {
-	return {
-		user: state.user,
-		userId: state.user && state.user.id
-	}
-}
+  return {
+    shelf: state.shelf,
+    book: state.shelf && state.shelf.books,
+    user: state.user,
+    userId: state.user && state.user.id
+  };
+};
 
 
 const ConnectedAp = connect(mapStateToProps)(App);
@@ -99,5 +101,5 @@ const ConnectedAp = connect(mapStateToProps)(App);
 
 ReactDOM.render(
   <Provider store={store}><ConnectedAp/></Provider>,
-  document.getElementById('app')
-);
+    document.getElementById('app')
+  );

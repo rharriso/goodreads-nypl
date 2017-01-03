@@ -28,9 +28,9 @@ class ShelfList extends React.Component {
    */
   loadShelvesForUserId(userId){
     if (userId) {
-    	fetch(`/shelves/${userId}`)
-    		.then((response) => response.json())
-    		.then((shelves) => this.setState({shelves: shelves}));
+      fetch(`/shelves/${userId}`)
+        .then((response) => response.json())
+        .then((shelves) => this.setState({shelves: shelves}));
     }
   }
 
@@ -59,7 +59,8 @@ class ShelfList extends React.Component {
 
 
   /**
-   *
+   * renders the jsx element
+   * @returns {ReactElement} - element of list
    */
   render(){
     return <List className='shelf-list'>

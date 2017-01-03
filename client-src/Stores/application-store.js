@@ -1,6 +1,5 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore } from 'redux';
 import 'whatwg-fetch'; /* global fetch */
-import thunk from 'redux-thunk';
 
 /**
  * Reducers
@@ -14,7 +13,7 @@ const reducer = (state = {}, action) => {
       newState.user = action.user;
       break;
     case 'SET_CURR_SHELF':
-    	newState.shelf = action.shelf
+      newState.shelf = action.shelf;
       break;
     default:
       console.error(`unhandled action ${action.type}`);
