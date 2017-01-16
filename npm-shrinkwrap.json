@@ -239,6 +239,11 @@
       "from": "qs@0.6.5",
       "resolved": "https://registry.npmjs.org/qs/-/qs-0.6.5.tgz"
     },
+    "query-string": {
+      "version": "4.3.1",
+      "from": "query-string@latest",
+      "resolved": "https://registry.npmjs.org/query-string/-/query-string-4.3.1.tgz"
+    },
     "range-parser": {
       "version": "0.0.4",
       "from": "range-parser@0.0.4",
@@ -306,6 +311,11 @@
       "version": "0.9.16",
       "from": "socket.io-client@0.9.16",
       "resolved": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-0.9.16.tgz"
+    },
+    "strict-uri-encode": {
+      "version": "1.1.0",
+      "from": "strict-uri-encode@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz"
     },
     "symbol-observable": {
       "version": "1.0.4",
