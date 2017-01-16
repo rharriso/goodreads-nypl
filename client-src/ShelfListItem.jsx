@@ -7,9 +7,7 @@ import { actions } from './Stores/application-store';
 
 class ShelfListItem extends React.Component {
   onClick(){
-    fetch(`/shelf/${this.props.shelf.title}?userId=${this.props.userId}`)
-      .then((response) => response.json())
-      .then((shelfData) => this.props.dispatch(actions.setShelf(shelfData)));
+    actions.setShelf(this.props.shelf.title, this.props.userId);
   }
 
   render(){
