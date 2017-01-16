@@ -76,7 +76,7 @@ class App extends React.Component {
             <SearchBar/>,
             <div className='flex-row'>
               <ShelfList userId={this.props.userId}/>
-              <BookList books={ this.props.books } />
+              <BookList />
             </div>
           )}
         </div>
@@ -88,8 +88,6 @@ class App extends React.Component {
 
 const mapStateToProps = function (state) {
   return {
-    shelf: state.shelf,
-    books: (state.shelf && state.shelf.books) || [],
     user: state.user,
     userId: state.user && state.user.id
   };
