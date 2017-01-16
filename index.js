@@ -16,12 +16,12 @@ var gr = new GoodReadsClient({
 });
 
 
-function processBookResponse(res, books) {
+function processBookResponse(books) {
   if (!books) {
     return [];
   }
 
-  var bookArr = books.map(function (b){
+  return books.map(function (b){
     var author = _.get(b, 'authors[0].author[0].name[0]');
     author = author || _.get(b, 'author[0].name[0]');
     var title = b.title[0];
@@ -35,12 +35,6 @@ function processBookResponse(res, books) {
       title: title
     };
   });
-
-  res.write(JSON.stringify({
-    books: bookArr
-  }));
-
-  return res.end();
 }
 
 
@@ -78,6 +72,7 @@ server.get('/shelves/:userId', function (req, res){
 
 
 server.get('/shelf/:shelfName', function (req,  res){
+
   return gr.getSingleShelf({
     userID: req.query.userId,
     shelf: req.params.shelfName,
@@ -88,7 +83,13 @@ server.get('/shelf/:shelfName', function (req,  res){
 
   }, function (json) {
     const books = _.get(json, 'GoodreadsResponse.books[0].book');
-    return processBookResponse(res, books);
+    const shelfData = {
+      books: processBookResponse(books),
+      userId: req.query.userId,
+      title: req.params.shelfName
+    };
+    res.write(JSON.stringify(shelfData));
+    return res.end();
   });
 });
 
@@ -97,7 +98,13 @@ server.get('/search', function (req,  res){
     const books = _.get(json, 'GoodreadsResponse.search[0].results[0].work', []).map(function (result){
       return result.best_book[0];
     });
-    return processBookResponse(res, books);
+    const shelfData = {
+      books: processBookResponse(books),
+      userId: null,
+      title: 'search'
+    };
+    res.write(JSON.stringify(shelfData));
+    return res.end();
   });
 });
 

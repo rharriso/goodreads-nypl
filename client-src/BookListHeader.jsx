@@ -5,7 +5,6 @@
  * Distributed under terms of the MIT license.
  */
 import React, { Component } from 'react';
-import { actions } from './Stores/application-store';
 
 const SORTABLE_PROPS = ['num_pages'];
 
