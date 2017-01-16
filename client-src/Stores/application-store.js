@@ -1,4 +1,5 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import 'whatwg-fetch'; /* global fetch */
 
 /**
@@ -27,7 +28,8 @@ const reducer = (state = {}, action) => {
  * Store
  */
 const store = createStore(
-  reducer
+  reducer,
+  applyMiddleware(thunk)
 );
 
 
@@ -50,14 +52,25 @@ actions.setUser = (user) => {
 };
 
 
+
 /**
- *
+ * fetch store info and dispatch actions
+ * @param {string} shelfTitle - title of shelf to set
+ * @param {string} userId - owner of the shelf
  */
-actions.setShelf = (shelf) => {
-  return {
-    type: 'SET_CURR_SHELF',
-    shelf
-  };
+actions.setShelf = (shelfTitle, userId) => {
+  return store.dispatch((() => {
+    console.log('setShelf');
+    return (dispatch) => {
+      console.log(dispatch);
+      fetch(`/shelf/${shelfTitle}?userId=${userId}`)
+        .then((response) => response.json())
+        .then((shelf) => dispatch({
+          type: 'SET_CURR_SHELF',
+          shelf
+        }));
+    };
+  })());
 };
 
 
