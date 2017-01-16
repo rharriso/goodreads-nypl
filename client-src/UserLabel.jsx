@@ -21,11 +21,7 @@ class UserLabel extends React.Component {
   }
 
   onSubmit(e){
-	  fetch(`/showUser/${this.state.username}`)
-	  	.then((response) => response.json())
-    	.then((user) => {
-    		this.props.dispatch(actions.setUser(user));
-    	});
+    actions.setUser(this.state.username);
   }
 
   onUnsetClick(){
