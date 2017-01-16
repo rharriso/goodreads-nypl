@@ -7,20 +7,20 @@ import 'whatwg-fetch'; /* global fetch */
  */
 
 const reducer = (state = {}, action) => {
-  const newState = Object.assign({}, state);
+	const newState = Object.assign({}, state);
 
-  switch (action.type) {
-    case 'SET_CURR_USER':
-      newState.user = action.user;
-      break;
-    case 'SET_CURR_SHELF':
-      newState.shelf = action.shelf;
-      break;
-    default:
-      console.error(`unhandled action ${action.type}`);
-  }
+	switch (action.type) {
+		case 'SET_CURR_USER':
+			newState.user = action.user;
+			break;
+		case 'SET_CURR_SHELF':
+			newState.shelf = action.shelf;
+			break;
+		default:
+			console.error(`unhandled action ${action.type}`);
+	}
 
-  return newState;
+	return newState;
 };
 
 
@@ -28,8 +28,8 @@ const reducer = (state = {}, action) => {
  * Store
  */
 const store = createStore(
-  reducer,
-  applyMiddleware(thunk)
+	reducer,
+	applyMiddleware(thunk)
 );
 
 
@@ -44,33 +44,37 @@ const actions = {};
  * @param {Object} user - the user data
  * @return {Action} object describing an action
  */
-actions.setUser = (user) => {
-  return {
-    type: 'SET_CURR_USER',
-    user
-  };
+actions.setUser = (userName) => {
+  return store.dispatch((() => {
+    return (dispatch) => {
+      fetch(`/showUser/${userName}`)
+        .then((response) => response.json())
+        .then((user) => dispatch({
+          type: 'SET_CURR_USER',
+          user
+        }));
+    };
+  })());
 };
-
 
 
 /**
  * fetch store info and dispatch actions
  * @param {string} shelfTitle - title of shelf to set
  * @param {string} userId - owner of the shelf
+ * @returns {Dispatch} dispatch of async handler
  */
 actions.setShelf = (shelfTitle, userId) => {
   return store.dispatch((() => {
-    console.log('setShelf');
     return (dispatch) => {
-      console.log(dispatch);
       fetch(`/shelf/${shelfTitle}?userId=${userId}`)
-        .then((response) => response.json())
-        .then((shelf) => dispatch({
+				.then((response) => response.json())
+				.then((shelf) => dispatch({
           type: 'SET_CURR_SHELF',
           shelf
         }));
-    };
-  })());
+		};
+	})());
 };
 
 
