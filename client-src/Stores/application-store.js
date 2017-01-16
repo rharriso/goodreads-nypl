@@ -14,16 +14,25 @@ const reducer = (state = {}, action) => {
     case 'SET_CURR_USER':
       newState.user = action.user;
       break;
+
     case 'SET_CURR_SHELF':
       Object.assign(newState, {
         shelf: {
           books: action.shelf.books,
+          title: action.shelf.title,
+          userId: action.shelf.userId,
           sortProp: 'position',
           sortDir: 'a',
-          page: 0
+          page: 1
         }
       });
       break;
+
+    case 'LOAD_NEXT_SHELF_PAGE':
+      newState.shelf.page = state.shelf.page + 1;
+      newState.shelf.books = newState.shelf.books.concat(action.shelf.books);
+      break;
+
     default:
       console.error(`unhandled action ${action.type}`);
   }
@@ -97,6 +106,32 @@ actions.setShelf = (shelfTitle, userId) => {
       type: 'SET_CURR_SHELF',
       shelf
     }));
+};
+
+
+/*
+ *
+ */
+actions.loadNextShelfPage = () => {
+  store.dispatch(
+    (dispatch, getState) => {
+      const {
+        title,
+        userId,
+        page,
+        sortProp,
+        sortDir
+      } = getState().shelf;
+
+      queryShelf(title, userId, {
+        page: page + 1,
+        sortProp,
+        sortDir
+      }).then((shelf) => dispatch({
+        type: 'LOAD_NEXT_SHELF_PAGE',
+        shelf
+      }));
+    });
 };
 
 

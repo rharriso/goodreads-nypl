@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import BookListItem from './BookListItem.jsx';
 import BookListHeader from './BookListHeader.jsx';
+import { actions } from './Stores/application-store';
 
 const SMALL_COL_STYLE = {width: 80, paddingLeft: 10, paddingRight: 10};
 
@@ -23,6 +24,8 @@ const HEADER_ITEMS = [
   {label: 'E-Book', style: SMALL_COL_STYLE},
   {label: 'Text', style: SMALL_COL_STYLE}
 ];
+
+const SCROLL_THRESHOLD = 1000;
 
 /*
   Book List
@@ -41,23 +44,33 @@ class BookList extends React.Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  componentWillRecieveProps(nextProps) {
-    // only load if some change has been made
-    this.canLoadNewPage = nextProps.books.length > 0 &&
-      (nextProps.books.length !== this.props.books.lenght ||
-       nextProps.sortProp !== this.props.sortProp ||
-       nextProps.sortProp !== this.props.sortProp);
+  /**
+   * allow new pages to be loaded
+   */
+  componentWillReceiveProps() {
+    this.canLoadNewPage = true;
+    this.handleScroll();
   }
 
+  /**
+   * load next page if scroll is close
+   */
   handleScroll(){
-    console.log(this);
-    console.log(this.bookList);
+    const scrollTop = document.body.scrollTop;
+    const scrollBottomPos = scrollTop +
+                            window.innerHeight;
+    const bookBottom = this.bookList.offsetTop +
+                        this.bookList.clientHeight;
+
+    if (Math.abs(bookBottom - scrollBottomPos) < SCROLL_THRESHOLD && this.canLoadNewPage) {
+      this.canLoadNewPage = false;
+      actions.loadNextShelfPage();
+    }
   }
 
   render(){
     return <div className='book-list' ref={(bookList) => {
       this.bookList = bookList;
-      console.log(this, this.bookList);
     }}>
       <Table >
         <TableHeader>
