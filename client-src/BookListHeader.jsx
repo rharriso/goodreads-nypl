@@ -5,6 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { actions } from './Stores/application-store';
 
 const SORTABLE_PROPS = ['num_pages'];
@@ -43,7 +44,8 @@ class BookListHeader extends Component {
     if (this.props.sortProp) {
       content = (
         <a className={linkClasses}
-          title={this.props.sortProp} onClick={this.onClick.bind(this)}>
+          title={this.props.sortProp}
+          onClick={this.onClick.bind(this)}>
           {content}
         </a>
       );
@@ -58,11 +60,11 @@ class BookListHeader extends Component {
    * @return {undefined}
    */
   onClick(){
-    actions.setShelfSort({
-      actionType: 'SHELF_SORT_CHANGE',
-      sortProp: this.props.sortProp,
-      sortDir: this.props.sortDir === 'a' ? 'd' : 'a'
-    });
+    console.log(this.props.sortProp);
+    actions.setShelfSort(
+      this.props.sortProp,
+      this.props.sortDir === 'a' ? 'd' : 'a'
+    );
   }
 
   /**
@@ -106,5 +108,21 @@ BookListHeader.propTypes = {
   sortDir: internals.validSortProp
 };
 
+const mapStateToProps = function (state) {
+  console.log(state);
+  if (state.shelf){
+    const { sortProp, sortDir} = state.shelf;
 
-export default BookListHeader;
+    if (sortProp === this.props.sortProp) {
+      return {
+        sortDir,
+        current: true
+      };
+    }
+    return {};
+  }
+};
+
+const ConnectedComponent = connect(mapStateToProps)(BookListHeader);
+
+export default ConnectedComponent;

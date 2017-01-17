@@ -16,13 +16,15 @@ const reducer = (state = {}, action) => {
       break;
 
     case 'SET_CURR_SHELF':
+      const { shelf } = action;
+
       Object.assign(newState, {
         shelf: {
-          books: action.shelf.books,
-          title: action.shelf.title,
-          userId: action.shelf.userId,
-          sortProp: action.shelf.sortProp = 'position',
-          sortDir: 'a',
+          books: shelf.books,
+          title: shelf.title,
+          userId: shelf.userId,
+          sortProp: shelf.sortProp || 'position',
+          sortDir: shelf.sortDir || 'a',
           page: 1
         }
       });
@@ -97,17 +99,16 @@ actions.setUser = (userName) => {
 /**
  *
  */
-actions.setShelfSort = function(sortProp, sortDir){
+actions.setShelfSort = function (sortProp, sortDir){
   return store.dispatch((() => {
     return (dispatch, getState) => {
       const {
         title,
-        userId,
-        page = 0
-      } = getState();
+        userId
+      } = getState().shelf;
 
       queryShelf(title, userId, {
-        page,
+        page: 0,
         sortProp,
         sortDir
       }).then((shelf) => store.dispatch({
@@ -115,7 +116,7 @@ actions.setShelfSort = function(sortProp, sortDir){
         shelf
       }));
     };
-  }));
+  })());
 };
 
 

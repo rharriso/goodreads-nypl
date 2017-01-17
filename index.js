@@ -72,21 +72,24 @@ server.get('/shelves/:userId', function (req, res){
 
 
 server.get('/shelf/:shelfName', function (req,  res){
+  const { query } = req;
 
   return gr.getSingleShelf({
-    userID: req.query.userId,
+    userID: query.userId,
     shelf: req.params.shelfName,
     perPage: 20,
-    order: req.query.sortDir || 'a',
-    page: req.query.page || 1,
-    sort: req.query.sortProp || 'position'
+    order: query.sortDir || 'a',
+    page: query.page || 1,
+    sort: query.sortProp || 'position'
 
   }, function (json) {
     const books = _.get(json, 'GoodreadsResponse.books[0].book');
     const shelfData = {
       books: processBookResponse(books),
       userId: req.query.userId,
-      title: req.params.shelfName
+      title: req.params.shelfName,
+      sortDir: query.sortDir,
+      sortProp: query.sortProp
     };
     res.write(JSON.stringify(shelfData));
     return res.end();
