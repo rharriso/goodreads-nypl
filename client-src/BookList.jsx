@@ -77,7 +77,7 @@ class BookList extends React.Component {
           { HEADER_ITEMS.map((item) =>{
             return <TableHeaderColumn style={item.style}>
               <BookListHeader
-                current={this.props.sortProp === item.sortProp}
+                sortProp={item.sortProp}
                 label={item.label}/>
             </TableHeaderColumn>;
           })}
@@ -107,7 +107,6 @@ const mapStateToProps = function (state) {
     const { books = [], sortProp, sortDir} = state.shelf;
     return { books, sortProp, sortDir };
   }
-
   return {};
 };
 
