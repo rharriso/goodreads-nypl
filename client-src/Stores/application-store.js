@@ -21,14 +21,14 @@ const reducer = (state = {}, action) => {
           books: action.shelf.books,
           title: action.shelf.title,
           userId: action.shelf.userId,
-          sortProp: 'position',
+          sortProp: action.shelf.sortProp = 'position',
           sortDir: 'a',
           page: 1
         }
       });
       break;
 
-    case 'LOAD_NEXT_SHELF_PAGE':
+    case 'APPEND_SHELF_PAGE':
       newState.shelf.page = state.shelf.page + 1;
       newState.shelf.books = newState.shelf.books.concat(action.shelf.books);
       break;
@@ -95,6 +95,31 @@ actions.setUser = (userName) => {
 
 
 /**
+ *
+ */
+actions.setShelfSort = function(sortProp, sortDir){
+  return store.dispatch((() => {
+    return (dispatch, getState) => {
+      const {
+        title,
+        userId,
+        page = 0
+      } = getState();
+
+      queryShelf(title, userId, {
+        page,
+        sortProp,
+        sortDir
+      }).then((shelf) => store.dispatch({
+        type: 'SET_CURR_SHELF',
+        shelf
+      }));
+    };
+  }));
+};
+
+
+/**
  * fetch store info and dispatch actions
  * @param {string} shelfTitle - title of shelf to set
  * @param {string} userId - owner of the shelf
@@ -128,7 +153,7 @@ actions.loadNextShelfPage = () => {
         sortProp,
         sortDir
       }).then((shelf) => dispatch({
-        type: 'LOAD_NEXT_SHELF_PAGE',
+        type: 'APPEND_SHELF_PAGE',
         shelf
       }));
     });
