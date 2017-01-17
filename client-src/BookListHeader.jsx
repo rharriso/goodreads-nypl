@@ -5,6 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 import React, { Component } from 'react';
+import { actions } from './Stores/application-store';
 
 const SORTABLE_PROPS = ['num_pages'];
 
@@ -57,7 +58,7 @@ class BookListHeader extends Component {
    * @return {undefined}
    */
   onClick(){
-    AppDispatcher.handleViewAction({
+    actions.setShelfSort({
       actionType: 'SHELF_SORT_CHANGE',
       sortProp: this.props.sortProp,
       sortDir: this.props.sortDir === 'a' ? 'd' : 'a'
