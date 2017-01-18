@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore } from 'redux';
 import queryString from 'query-string';
 import 'whatwg-fetch'; /* global fetch */
 
@@ -81,6 +81,14 @@ const actions = {};
  * @return {Action} object describing an action
  */
 actions.setUser = (userName) => {
+  // sign out
+  if (!userName) {
+    return store.dispatch({
+      type: 'SET_CURR_USER',
+      user: undefined
+    });
+  }
+
   fetch(`/showUser/${userName}`)
     .then((response) => response.json())
     .then((user) => store.dispatch({
