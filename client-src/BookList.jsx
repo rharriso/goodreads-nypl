@@ -47,8 +47,8 @@ class BookList extends React.Component {
   /**
    * allow new pages to be loaded
    */
-  componentWillReceiveProps() {
-    this.canLoadNewPage = true;
+  componentWillReceiveProps(nextProps) {
+    this.canLoadNewPage = !nextProps.searchShelf;
     this.handleScroll();
   }
 
@@ -104,8 +104,8 @@ class BookList extends React.Component {
 
 const mapStateToProps = function (state) {
   if (state.shelf){
-    const { books = [], sortProp, sortDir} = state.shelf;
-    return { books, sortProp, sortDir };
+    const { books = [], sortProp, sortDir, isSearchShelf } = state.shelf;
+    return { books, sortProp, sortDir, isSearchShelf };
   }
   return {};
 };

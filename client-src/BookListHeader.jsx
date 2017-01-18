@@ -60,7 +60,6 @@ class BookListHeader extends Component {
    * @return {undefined}
    */
   onClick(){
-    console.log(this.props.sortProp);
     actions.setShelfSort(
       this.props.sortProp,
       this.props.sortDir === 'a' ? 'd' : 'a'
@@ -109,7 +108,6 @@ BookListHeader.propTypes = {
 };
 
 const mapStateToProps = function (state) {
-  console.log(state);
   if (state.shelf){
     const { sortProp, sortDir} = state.shelf;
 

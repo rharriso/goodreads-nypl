@@ -4,8 +4,6 @@ import { Provider, connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import BookList from './BookList';
-import CurrentShelfStore from './Stores/CurrentShelfStore';
-import SearchStore from './Stores/SearchStore';
 import SearchBar from './SearchBar';
 import ShelfList from './ShelfList';
 import UserLabel from './UserLabel';
@@ -25,44 +23,6 @@ class App extends React.Component {
   }
 
 
-/**
-  * bind to store changes on mount
-  * @returns {undefined}
-  */
-  componentDidMount() {
-    CurrentShelfStore.addChangeListener(this._onShelfChange.bind(this));
-    SearchStore.addChangeListener(this._onSearchChange.bind(this));
-  }
-
-
-  /**
-  * unbind to store changes on unmount
-  * @returns {undefined}
-  */
-  componentWillUnmount() {
-    CurrentShelfStore.removeChangeListener(this._onShelfChange.bind(this));
-    SearchStore.removeChangeListener(this._onSearchChange.bind(this));
-  }
-
-
-  /**
-  * set the current store state on change
-  * @returns {undefined}
-  */
-  _onShelfChange(){
-    this.setState(CurrentShelfStore.get());
-  }
-
-
-  /**
-  * set the current search state on change
-  * @returns {undefined}
-  */
-  _onSearchChange(){
-    this.setState(SearchStore.get());
-  }
-
-
   /**
   * reder the user selection and maybe the shelf list
   * @returns {React.Component} - the root of the app
@@ -73,10 +33,14 @@ class App extends React.Component {
         <UserLabel user={this.props.user} />
         <div>
           { !!this.props.user && (
-            <SearchBar/>,
-            <div className='flex-row'>
-              <ShelfList userId={this.props.userId}/>
-              <BookList />
+            <div className='flex-collumn'>
+              <div className='flex-row'>
+                <SearchBar/>
+              </div>
+              <div className='flex-row'>
+                <ShelfList userId={this.props.userId}/>
+                <BookList />
+              </div>
             </div>
           )}
         </div>

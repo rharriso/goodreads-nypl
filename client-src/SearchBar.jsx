@@ -1,5 +1,5 @@
 import React from 'react';
-import AppDispatcher from './Dispatchers/AppDispatcher';
+import { actions } from './Stores/application-store';
 
 /**
  * SearchBar
@@ -24,10 +24,7 @@ class SearchBar extends React.Component {
    */
   onSubmit(e){
     e.preventDefault();
-    AppDispatcher.handleViewAction({
-      actionType: 'BOOK_SEARCH',
-      q: this.state.q
-    });
+    actions.search(this.state.q);
   }
 
 

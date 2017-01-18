@@ -104,7 +104,7 @@ server.get('/search', function (req,  res){
     const shelfData = {
       books: processBookResponse(books),
       userId: null,
-      title: 'search'
+      title: 'search-result-shelf'
     };
     res.write(JSON.stringify(shelfData));
     return res.end();
