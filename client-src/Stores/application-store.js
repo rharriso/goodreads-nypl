@@ -1,5 +1,5 @@
+import _ from 'lodash';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import queryString from 'query-string';
 import 'whatwg-fetch'; /* global fetch */
 
@@ -21,11 +21,12 @@ const reducer = (state = {}, action) => {
       Object.assign(newState, {
         shelf: {
           books: shelf.books,
+          page: 1,
           title: shelf.title,
           userId: shelf.userId,
           sortProp: shelf.sortProp || 'position',
           sortDir: shelf.sortDir || 'a',
-          page: 1
+          isSearchShelf: shelf.title === 'search-result-shelf'
         }
       });
       break;
@@ -46,10 +47,7 @@ const reducer = (state = {}, action) => {
 /**
  * Store
  */
-const store = createStore(
-  reducer,
-  applyMiddleware(thunk)
-);
+const store = createStore(reducer);
 
 /*
  * action helpers
@@ -83,16 +81,12 @@ const actions = {};
  * @return {Action} object describing an action
  */
 actions.setUser = (userName) => {
-  return store.dispatch((() => {
-    return (dispatch) => {
-      fetch(`/showUser/${userName}`)
-        .then((response) => response.json())
-        .then((user) => dispatch({
-          type: 'SET_CURR_USER',
-          user
-        }));
-    };
-  })());
+  fetch(`/showUser/${userName}`)
+    .then((response) => response.json())
+    .then((user) => store.dispatch({
+      type: 'SET_CURR_USER',
+      user
+    }));
 };
 
 
@@ -100,23 +94,26 @@ actions.setUser = (userName) => {
  *
  */
 actions.setShelfSort = function (sortProp, sortDir){
-  return store.dispatch((() => {
-    return (dispatch, getState) => {
-      const {
-        title,
-        userId
-      } = getState().shelf;
+  const isSearchShelf = _.get(store.getState(), 'shelf.isSearchShelf');
+  // TODO: Implement local sort
+  if (isSearchShelf) {
+    console.error('can`t sort search list');
+    return;
+  }
 
-      queryShelf(title, userId, {
-        page: 0,
-        sortProp,
-        sortDir
-      }).then((shelf) => store.dispatch({
-        type: 'SET_CURR_SHELF',
-        shelf
-      }));
-    };
-  })());
+  const {
+    title,
+    userId
+  } = store.getState().shelf;
+
+  queryShelf(title, userId, {
+    page: 0,
+    sortProp,
+    sortDir
+  }).then((shelf) => store.dispatch({
+    type: 'SET_CURR_SHELF',
+    shelf
+  }));
 };
 
 
@@ -135,29 +132,37 @@ actions.setShelf = (shelfTitle, userId) => {
 };
 
 
-/*
+actions.search = (q) => {
+  const qString = queryString.stringify({q});
+
+  fetch(`/search?${qString}`)
+    .then((response) => response.json())
+    .then((shelf) => store.dispatch({
+      type: 'SET_CURR_SHELF',
+      shelf
+    }));
+};
+
+/**
  *
  */
 actions.loadNextShelfPage = () => {
-  store.dispatch(
-    (dispatch, getState) => {
-      const {
-        title,
-        userId,
-        page,
-        sortProp,
-        sortDir
-      } = getState().shelf;
+  const {
+    title,
+    userId,
+    page,
+    sortProp,
+    sortDir
+  } = store.getState().shelf;
 
-      queryShelf(title, userId, {
-        page: page + 1,
-        sortProp,
-        sortDir
-      }).then((shelf) => dispatch({
-        type: 'APPEND_SHELF_PAGE',
-        shelf
-      }));
-    });
+  queryShelf(title, userId, {
+    page: page + 1,
+    sortProp,
+    sortDir
+  }).then((shelf) => store.dispatch({
+    type: 'APPEND_SHELF_PAGE',
+    shelf
+  }));
 };
 
 
