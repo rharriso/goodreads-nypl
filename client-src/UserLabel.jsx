@@ -39,6 +39,7 @@ class UserLabel extends React.Component {
     if (user) {
       return (
           <div>
+            <img src={user.imageUrl} alt={user.name}/>
             <span>{user.name}</span>
             &nbsp;|&nbsp;
             <a href="#" onClick={this.onUnsetClick.bind(this)}>Not You?</a>
