@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import 'whatwg-fetch'; /* global fetch */
 
 import { actions } from './Stores/application-store';
@@ -15,12 +15,13 @@ const wrapperStyle = {
  * UserLabel
  */
 class UserLabel extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  onSubmit(e){
+  onSubmit(){
     actions.setUser(this.state.username);
   }
 
@@ -33,10 +34,12 @@ class UserLabel extends React.Component {
   }
 
   render(){
-    if (this.props.user) {
+    const { user } = this.props;
+
+    if (user) {
       return (
           <div>
-            <span>{this.props.user.name}</span>
+            <span>{user.name}</span>
             &nbsp;|&nbsp;
             <a href="#" onClick={this.onUnsetClick.bind(this)}>Not You?</a>
           </div>

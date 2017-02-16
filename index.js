@@ -43,9 +43,7 @@ server.get('/showUser/:username', function (req, res) {
     const userData = json.GoodreadsResponse.user[0];
     const resp = {
       id: userData.id[0],
-      imageUrl: userData.image_url[0],
       name: userData.name[0],
-      smallImageUrl: userData.small_image_url[0],
       username: userData.user_name[0]
     };
 
