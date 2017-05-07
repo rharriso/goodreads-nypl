@@ -32,6 +32,15 @@ function titleCriterion(bookTitle){
   return `t:(${lintTitle})`;
 }
 
+/**
+ * construct a format link
+ * @params {string} bookTitle - the title of the book
+ * @params {string} formatCode - format code
+ * @returns {string} search url
+ */
+function formatCriterion(bookTitle, formatCode) {
+  return titleCriterion(bookTitle) + ` f:${formatCode}`;
+}
 
 /**
  * create library link
@@ -60,32 +69,41 @@ class BookListItem extends React.Component {
       author
     } = this.props.book;
 
-    return <TableRow>
-      <TableRowColumn style={SMALL_COL_STYLE}>
-          <Avatar src={bookImageUrl} />
-      </TableRowColumn>
-
-      <TableRowColumn>
-        <FlatButton
-          className="book-list-item-title"
-          label={bookTitle}
-          href={libraryLink(titleCriterion(bookTitle))} />
+    return (
+      <TableRow>
+        <TableRowColumn style={SMALL_COL_STYLE}>
+            <Avatar src={bookImageUrl} />
         </TableRowColumn>
-      <TableRowColumn>
-        <FlatButton
-          className="book-list-item-author"
-          label={author}
-          href={libraryLink(authorCriterion(author))} />
-        </TableRowColumn>
-      <TableRowColumn style={SMALL_COL_STYLE}>{numPages}</TableRowColumn>
 
-    <TableRowColumn style={SMALL_COL_STYLE}>
-        <FlatButton
-          label="GR"
-          href={`https://www.goodreads.com/book/show/${bookId}`}
-        />
-      </TableRowColumn>
-    </TableRow>;
+        <TableRowColumn>
+          <FlatButton
+            className="book-list-item-title"
+            label={bookTitle}
+            href={libraryLink(titleCriterion(bookTitle))} />
+          </TableRowColumn>
+        <TableRowColumn>
+          <FlatButton
+            className="book-list-item-author"
+            label={author}
+            href={libraryLink(authorCriterion(author))} />
+          </TableRowColumn>
+        <TableRowColumn style={SMALL_COL_STYLE}>{numPages}</TableRowColumn>
+
+        <TableRowColumn style={SMALL_COL_STYLE}>
+          <FlatButton
+            label="GR"
+            href={`https://www.goodreads.com/book/show/${bookId}`}
+          />
+        </TableRowColumn>
+
+        <TableRowColumn style={SMALL_COL_STYLE}>
+          <FlatButton
+            label="Audio"
+            href={libraryLink(formatCriterion(bookTitle, AUDIO_BOOK_CODE))}
+          />
+        </TableRowColumn>
+      </TableRow>
+    );
   }
 }
 

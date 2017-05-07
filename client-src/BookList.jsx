@@ -20,6 +20,7 @@ const HEADER_ITEMS = [
   {label: 'Author', sortProp: 'author'},
   {label: 'Page Count', sortProp: 'num_pages', style: SMALL_COL_STYLE},
   {label: 'Goodreads', style: SMALL_COL_STYLE},
+  {label: 'Audio Book', style: SMALL_COL_STYLE}
 ];
 
 const SCROLL_THRESHOLD = 1000;
@@ -100,7 +101,7 @@ class BookList extends React.Component {
 };
 
 const mapStateToProps = function (state) {
-  if (state.shelf){
+  if (state.shelf) {
     const { books = [], sortProp, sortDir, isSearchShelf } = state.shelf;
     return { books, sortProp, sortDir, isSearchShelf };
   }
