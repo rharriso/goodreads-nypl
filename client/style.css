@@ -34,3 +34,8 @@
 .book-list-header.d::after{
   content: ' v'
 }
+
+.book-list-item-title *,
+.book-list-item-author * {
+  text-transform: capitalize !important;
+}

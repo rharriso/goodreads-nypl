@@ -20,9 +20,6 @@ const HEADER_ITEMS = [
   {label: 'Author', sortProp: 'author'},
   {label: 'Page Count', sortProp: 'num_pages', style: SMALL_COL_STYLE},
   {label: 'Goodreads', style: SMALL_COL_STYLE},
-  {label: 'Audio', style: SMALL_COL_STYLE},
-  {label: 'E-Book', style: SMALL_COL_STYLE},
-  {label: 'Text', style: SMALL_COL_STYLE}
 ];
 
 const SCROLL_THRESHOLD = 1000;
