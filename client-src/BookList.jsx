@@ -13,11 +13,12 @@ import BookListHeader from './BookListHeader.jsx';
 import { actions } from './Stores/application-store';
 
 const SMALL_COL_STYLE = {width: 80, paddingLeft: 10, paddingRight: 10};
+const WIDE_FIXED_COL_STYLE = {width: 150, paddingLeft: 10, paddingRight: 10};
 
 const HEADER_ITEMS = [
   {label: 'Image', sortProp: 'position', style: SMALL_COL_STYLE},
   {label: 'Title', sortProp: 'title'},
-  {label: 'Author', sortProp: 'author'},
+  {label: 'Author', sortProp: 'author', style: WIDE_FIXED_COL_STYLE},
   {label: 'Page Count', sortProp: 'num_pages', style: SMALL_COL_STYLE},
   {label: 'Goodreads', style: SMALL_COL_STYLE},
   {label: 'Audio Book', style: SMALL_COL_STYLE}
