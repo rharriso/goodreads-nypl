@@ -10,8 +10,9 @@ import {TableRow, TableRowColumn} from 'material-ui/Table';
 const AUDIO_BOOK_CODE = 'n';
 const E_BOOK_CODE = 'z';
 const TEXT_CODE = 'a';
-const SMALL_COL_STYLE = {width: 80, paddingLeft: 10, paddingRight: 10};
-const WIDE_FIXED_COL_STYLE = {width: 150, paddingLeft: 10, paddingRight: 10};
+const SMALL_COL_STYLE = {width: 80, paddingLeft: 5, paddingRight: 5};
+const IMG_COL_STYLE = {width: 100, paddingLeft: 5, paddingRight: 5};
+const WIDE_FIXED_COL_STYLE = {width: 150, paddingLeft: 5, paddingRight: 0};
 
 /**
  * produce the author queyr string
@@ -72,7 +73,7 @@ class BookListItem extends React.Component {
 
     return (
       <TableRow>
-        <TableRowColumn style={SMALL_COL_STYLE}>
+        <TableRowColumn style={IMG_COL_STYLE}>
             <Avatar src={bookImageUrl} size={100} />
         </TableRowColumn>
 
