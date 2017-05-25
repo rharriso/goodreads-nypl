@@ -73,7 +73,7 @@ class BookListItem extends React.Component {
     return (
       <TableRow>
         <TableRowColumn style={SMALL_COL_STYLE}>
-            <Avatar src={bookImageUrl} />
+            <Avatar src={bookImageUrl} size={100} />
         </TableRowColumn>
 
         <TableRowColumn>
